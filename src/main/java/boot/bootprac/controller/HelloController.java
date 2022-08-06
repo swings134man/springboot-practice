@@ -1,5 +1,7 @@
 package boot.bootprac.controller;
 
+import boot.bootprac.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,8 @@
 package boot.bootprac.repository;
 
 import boot.bootprac.domain.Member;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
@@ -13,6 +15,8 @@ import java.util.*;
  * 설계도(interface)를 기반으로 실제 구현 하는 class
  * Repository란 - DAO 와 같은 역할을 함.
 ************/
+@Repository
+@RequiredArgsConstructor
 public class MemoryMemberRepository implements MemberRepository {
 
     private static Map<Long, Member> store = new HashMap<>(); // DB에 넣는것 대신에 Map 으로 Memory에 일시 저장.

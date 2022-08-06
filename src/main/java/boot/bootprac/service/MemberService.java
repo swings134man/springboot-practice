@@ -4,6 +4,7 @@ import boot.bootprac.domain.Member;
 import boot.bootprac.repository.MemberRepository;
 import boot.bootprac.repository.MemoryMemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.Optional;
 * @author : SeokJun Kang(swings134@gmail.com)
 * @version : 1.0.0
 ************/
+@Service
 @RequiredArgsConstructor
 public class MemberService {
 
