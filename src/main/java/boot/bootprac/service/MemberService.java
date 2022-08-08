@@ -1,9 +1,11 @@
 package boot.bootprac.service;
 
 import boot.bootprac.domain.Member;
+import boot.bootprac.repository.JdbcMemberRepository;
 import boot.bootprac.repository.MemberRepository;
 import boot.bootprac.repository.MemoryMemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,16 @@ import java.util.Optional;
 * @author : SeokJun Kang(swings134@gmail.com)
 * @version : 1.0.0
 ************/
-@Service
-@RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository; // in 메모리 방식
+    //private final JdbcMemberRepository memberRepository; // h2 DB repository
+
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
 
 /*
 // 아래의 repository 생성자는 Lombok의 Required(final이 붙는 필드 값만 파라미터로 받는 생성자 생성) 사용.
