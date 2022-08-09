@@ -7,6 +7,7 @@ import boot.bootprac.repository.MemoryMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import java.util.Optional;
 * @author : SeokJun Kang(swings134@gmail.com)
 * @version : 1.0.0
 ************/
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository; // in 메모리 방식

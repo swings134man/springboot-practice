@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,10 +33,12 @@ class MemberServiceIntegrationTest {
 
 
     @Test
+    //@Commit
     void 회원가입() {
+        // Test 시에 @Commit 어노테이션 생성시 -> DB에 반영됨. (rollback 되지 않음.)
         // given
         Member member = new Member();
-        member.setName("spring_jdbc");
+        member.setName("spring_jpa2");
 
         // when
         Long saveId = memberService.join(member);
