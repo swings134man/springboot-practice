@@ -30,25 +30,33 @@ public class SpringConfig {
 //    }
 
     // JPA 사용
-    private EntityManager em;
+//    private EntityManager em;
+//
+//    @Autowired
+//    public SpringConfig(EntityManager em) {
+//        this.em = em;
+//    }
+
+    // Spring data JPA
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public SpringConfig(EntityManager em) {
-        this.em = em;
+    public SpringConfig(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Bean
     public MemberService memberService() {
         // Service는 repository를 갖고있으므로 넣어주지 않으면 에러 발생.
-        return new MemberService(memberRepository());
+        return new MemberService(memberRepository);
     }
 
-    @Bean
-    public MemberRepository memberRepository() {
+   // @Bean
+    //public MemberRepository memberRepository() {
         //return new MemoryMemberRepository();
         //return new JdbcMemberRepository(dataSource);
-       // return new JdbcTemplateMemberRepository(dataSource);
-        return new JpaMemberRepository(em);
-    }
+       // return new JdbcTemplateMemberRepository(dataSource); //Jdbc Template
+        //return new JpaMemberRepository(em); // Jpa
+    //}
 
 }
