@@ -88,9 +88,11 @@ class MemberServiceTest {
 
     @Test
     void findMember() {
+
     }
 
     @Test
     void findOne() {
+
     }
 }
