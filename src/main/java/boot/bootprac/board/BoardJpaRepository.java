@@ -12,4 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BoardJpaRepository extends JpaRepository<BoardDomain, Long>, BoardRepository {
 
 
+
 }//class

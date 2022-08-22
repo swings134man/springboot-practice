@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 /************
 * @info : 게시판 domain class
@@ -16,7 +17,7 @@ import javax.persistence.Id;
 ************/
 @Entity
 @Data
-public class BoardDomain {
+public class BoardDomain extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,7 +25,7 @@ public class BoardDomain {
     private String title; //게시판 제목
     private String content; // 내용
     private String writer; //작성자
-    private String date; // 작성시간
-
+    private LocalDateTime insertDate; // 작성 시간
+    private LocalDateTime modifiedDate; // 변경 시간
 
 } //class
