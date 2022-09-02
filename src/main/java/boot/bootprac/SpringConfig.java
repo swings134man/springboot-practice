@@ -1,13 +1,12 @@
 package boot.bootprac;
 
+import boot.bootprac.board.BoardRepository;
+import boot.bootprac.board.BoardService;
 import boot.bootprac.repository.*;
 import boot.bootprac.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.persistence.EntityManager;
-import javax.sql.DataSource;
 
 /************
 * @info : Java Code로 직접 Bean 등록하는 방법. class
@@ -39,10 +38,12 @@ public class SpringConfig {
 
     // Spring data JPA
     private final MemberRepository memberRepository;
+    //private final BoardRepository boardRepository;
 
     @Autowired
     public SpringConfig(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+       // this.boardRepository = boardRepository;
     }
 
     @Bean
@@ -50,6 +51,7 @@ public class SpringConfig {
         // Service는 repository를 갖고있으므로 넣어주지 않으면 에러 발생.
         return new MemberService(memberRepository);
     }
+
 
    // @Bean
     //public MemberRepository memberRepository() {

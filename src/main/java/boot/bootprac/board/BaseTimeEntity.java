@@ -7,7 +7,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /************
 * @info : JPA에서 생성, 변경 시간을 DB에 반영하기 위한 클래스
@@ -28,10 +31,30 @@ public class BaseTimeEntity {
     @LastModifiedDate : 조회한 Entity 값 변경시 시간 자동 저장
      */
 
+//    @CreatedDate
+//    private LocalDateTime localDateTime;
+//
+//    @LastModifiedDate
+//    private LocalDateTime modifiedDate;
+
+    /*
+    Date 의 format 변경 및 String 타입 반환을 위한 BaseTime Code
+     */
     @CreatedDate
-    private LocalDateTime localDateTime;
+    private String insertdate;
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    private String modifieddate;
+
+    @PrePersist
+    public void onPrePersist(){
+        this.insertdate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+        this.modifieddate = this.insertdate;
+    }
+
+    @PreUpdate
+    public void onPreUpdate(){
+        this.modifieddate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+    }
 
 }

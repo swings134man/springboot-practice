@@ -23,12 +23,21 @@ public class BoardController {
     private static BoardService boardService;
 
     @PostMapping("v1/save")
-    public String save(BoardDomain in){
-        BoardDomain domain = new BoardDomain();
+    public String save(Board in){
+//        BoardDomain domain = new BoardDomain();
 
         log.debug("입력 확인!! : " + in);
 
-        return ""; // 화면
+        Long result = boardService.save(in);
+
+        return "boards/boardList"; // 화면 return
+    }
+
+    @GetMapping("v1/retrieveOne")
+    public String retrieveOne(Long boardId) {
+        boardService.findById(boardId);
+
+        return "";
     }
 
 
