@@ -20,9 +20,9 @@ class BoardServiceTest {
     void save() {
         //given
         Board domain = new Board();
-        domain.setWriter("worker2");
-        domain.setTitle("title2");
-        domain.setContent("content2");
+        domain.setWriter("worker4");
+        domain.setTitle("title4");
+        domain.setContent("content4");
 
         // when
         Long whenResult = service.save(domain);
