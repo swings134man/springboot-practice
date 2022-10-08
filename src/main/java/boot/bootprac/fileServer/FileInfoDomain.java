@@ -19,7 +19,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "files")
+@Table(name = "file_info")
 public class FileInfoDomain extends BaseTimeEntity {
 
     @Id @GeneratedValue
