@@ -53,8 +53,7 @@ public class FileService {
         // DB 파일정보 저장
         FileEntity saveFile = fileRepository.save(file);
 
-        System.out.println("file  S: " + file);
-        System.out.println("files  S: " + files);
+        System.out.println("file  S: " + saveFile);
 
         return saveFile.getId();
     }// saveFile
