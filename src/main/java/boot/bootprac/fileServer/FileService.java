@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,6 +23,7 @@ public class FileService {
 
     private final FileRepository fileRepository;
 
+    // 파일 업로드
     public Long saveFile(MultipartFile files) throws IOException {
         if(files.isEmpty()) {
             return null;
@@ -58,4 +62,29 @@ public class FileService {
         return saveFile.getId();
     }// saveFile
 
-}
+    // 파일 다운로드
+    public List<FileEntity> viewFile() throws Exception {
+        List<FileEntity> filesAll = fileRepository.findAll();
+
+        if(filesAll.isEmpty()) {
+            throw new Exception();
+        }
+
+        return filesAll;
+    }
+
+    // 이미지 출력
+    public Optional<FileEntity> showImage(Long id) {
+        Optional<FileEntity> fileEntity = fileRepository.findById(id);
+
+        return fileEntity;
+    }
+
+    // 파일 다운
+    public FileEntity downFile(Long id) {
+        FileEntity file = fileRepository.findById(id).orElse(null);
+
+        return file;
+    }
+
+}// class
