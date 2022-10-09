@@ -82,8 +82,10 @@ public class MemberService {
     /**
      * 하나의 회원만 조회
      */
-    public Optional<Member> findOne(Long memberId) {
-        return memberRepository.findById(memberId);
+    public Member findOne(Long memberId) {
+
+        return memberRepository.findById(memberId).get();
+        //return memberRepository.findById(memberId); // Optional
     }
 
 }

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class MemberController {
@@ -36,6 +38,7 @@ public class MemberController {
         return "redirect:/";
     }
 
+    // List
     @GetMapping("/members")
     public String List(Model model) {
         List<Member> members = memberService.findMember();
@@ -44,4 +47,18 @@ public class MemberController {
         return "members/memberList";
     }
 
+    //단건 조회
+    @GetMapping("/members/findone")
+    public String findOne(@RequestParam Long id, Model model) {
+
+       // Optional<Member> member = memberService.findOne(id);
+        //Member member1 = member.get();
+
+        Member member1 = memberService.findOne(id);
+
+
+        model.addAttribute("member", member1);
+
+        return "members/findMember";
+    }
 }

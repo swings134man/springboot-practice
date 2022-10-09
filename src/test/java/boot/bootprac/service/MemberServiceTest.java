@@ -52,7 +52,7 @@ class MemberServiceTest {
         Long saveId = memberService.join(member);
 
         // then
-        Member findMember = memberService.findOne(saveId).get(); //Id 로 회원 하나 조회
+        Member findMember = memberService.findOne(saveId); //Id 로 회원 하나 조회
         assertThat(member.getName()).isEqualTo(findMember.getName());  // Test 입력용 name과, 실제 결과의 name 이 같은지 확인.
     }
 
