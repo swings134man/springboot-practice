@@ -39,4 +39,5 @@ public class Board extends BaseTimeEntity{
 //    @Column(name = "modifieddate")
 //    private String modifiedDate; // 변경 시간
 
+
 } //class

@@ -41,20 +41,20 @@ public class BaseTimeEntity {
     Date 의 format 변경 및 String 타입 반환을 위한 BaseTime Code
      */
     @CreatedDate
-    private String insertdate;
+    private String insertDate;
 
     @LastModifiedDate
-    private String modifieddate;
+    private String modifiedDate;
 
     @PrePersist
     public void onPrePersist(){
-        this.insertdate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-        this.modifieddate = this.insertdate;
+        this.insertDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+        this.modifiedDate = this.insertDate;
     }
 
     @PreUpdate
     public void onPreUpdate(){
-        this.modifieddate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+        this.modifiedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
     }
 
 }

@@ -31,6 +31,7 @@ dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'mysql:mysql-connector-java' // MySql
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 	//runtimeOnly 'com.h2database:h2'
 }
 
