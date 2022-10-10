@@ -3,6 +3,7 @@ package boot.bootprac.board;
 import lombok.*;
 
 import javax.persistence.Column;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,8 +17,8 @@ public class BoardDTO {
     private String title; //게시판 제목
     private String content; // 내용
     private String writer; //작성자
-    private String insertDate;
-    private String modifiedDate;
+    private LocalDateTime insertDate;
+    private LocalDateTime modifiedDate;
 
     // To Entity
 

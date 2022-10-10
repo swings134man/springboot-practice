@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -20,9 +21,9 @@ class BoardServiceTest {
     void save() {
         //given
         Board domain = new Board();
-        domain.setWriter("worker4");
-        domain.setTitle("title4");
-        domain.setContent("content4");
+        domain.setWriter("worker8");
+        domain.setTitle("title8");
+        domain.setContent("content8");
 
         // when
         Long whenResult = service.save(domain);
@@ -46,6 +47,27 @@ class BoardServiceTest {
 
         // then
         assertThat(in).isEqualTo(result.get().getBoardId());
+
+    }
+
+    @Test
+    void findAll() {
+
+        List<BoardDTO> all = service.findAll();
+
+        // when
+        Long wantId = 1L;
+        Long resultId = all.get(0).getBoardId();
+
+        // then
+        assertThat(resultId).isEqualTo(wantId);
+
+        // when
+        Long wantId2 = 2L;
+        Long resultId2 = all.get(1).getBoardId();
+
+        // then
+        assertThat(resultId).isEqualTo(wantId);
 
     }
 }

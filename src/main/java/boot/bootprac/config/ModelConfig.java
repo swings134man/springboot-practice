@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class ModelConfig {
 
     // Model Mapper
+    // DTO <-> Entity Type Change
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();

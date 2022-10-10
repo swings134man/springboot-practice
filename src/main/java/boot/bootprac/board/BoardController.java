@@ -3,9 +3,12 @@ package boot.bootprac.board;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+import java.util.Optional;
 
 /************
 * @info : 게시판 컨트롤러
@@ -17,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("board/")
 public class BoardController {
 
     private static BoardService boardService;
+    private static BoardService s;
 
     @PostMapping("v1/save")
     public String save(Board in){
@@ -30,16 +33,32 @@ public class BoardController {
 
         Long result = boardService.save(in);
 
-        return "boards/boardList"; // 화면 return
+        return "boards/board"; // 화면 return
     }
 
-    @GetMapping("v1/retrieveOne")
-    public String retrieveOne(Long boardId) {
-        boardService.findById(boardId);
+    @GetMapping("/board/v1/retrieveOne")
+    public String retrieveOne(Long boardId, Model model) {
+        Optional<Board> result = s.findById(boardId);
 
-        return "";
+        model.addAttribute("board", result.get());
+
+        return "boards/findBoard";
     }
 
-    
+    @GetMapping("board/v1/findAll")
+    public String retrieveAll(Model model) {
+
+        System.out.println("cocococooccococococococo");
+
+        List<BoardDTO> result = boardService.findAll();
+
+        System.out.println("DTO : "+ result);
+
+        model.addAttribute("boardList",result);
+
+        return "boards/boardList";
+    }
+
+
 
 }//class

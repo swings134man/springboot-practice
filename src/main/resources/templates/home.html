@@ -16,14 +16,26 @@
         </form>
         </p> </div>
 </div> <!-- /container -->
-    <div>
-        <br>
+    <hr color="red">
+<div>
             <a href="/files/fileMain">파일 업로드</a>
     </div>
     <div>
         <br>
         <a href="/files/fileView">파일 다운로드</a>
     </div>
+<hr color="red">
+
+<div>
+    <a href="board/v1/findAll">게시판 전체 리스트</a> <br>
+
+    <form action="/board/v1/retrieveOne" method="get">
+        <label for="boardId">아이디</label>
+        <input type="text" id="boardId" name="boardId" placeholder="게시물번호를 입력하세요">
+        <button type="submit">검색</button>
+    </form>
+</div>
+
 
 </body>
 </html>

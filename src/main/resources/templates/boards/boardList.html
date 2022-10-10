@@ -5,6 +5,27 @@
     <title>Board-List</title>
 </head>
 <body>
-
+<div class="container">
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>작성자</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr th:each="boards : ${boardList}">
+                <td th:text="${boards.boardId}"></td>
+                <td th:text="${boards.title}"></td>
+                <td th:text="${boards.content}"></td>
+                <td th:text="${boards.writer}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div> <!-- /container -->
 </body>
 </html>
