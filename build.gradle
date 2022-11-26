@@ -32,6 +32,8 @@ dependencies {
 	implementation 'mysql:mysql-connector-java' // MySql
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+	implementation 'org.apache.poi:poi:5.2.2'                // .xls 확장자
+	implementation 'org.apache.poi:poi-ooxml:5.2.2'          // .xlsx 확장자
 	//runtimeOnly 'com.h2database:h2'
 }
 

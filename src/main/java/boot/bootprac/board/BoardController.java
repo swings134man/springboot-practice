@@ -48,10 +48,8 @@ public class BoardController {
     @GetMapping("board/v1/findAll")
     public String retrieveAll(Model model) {
 
-        System.out.println("cocococooccococococococo");
-
-        List<BoardDTO> result = boardService.findAll();
-
+//        List<BoardDTO> result = boardService.findAll();
+        List<Board> result = boardService.test();
         System.out.println("DTO : "+ result);
 
         model.addAttribute("boardList",result);
