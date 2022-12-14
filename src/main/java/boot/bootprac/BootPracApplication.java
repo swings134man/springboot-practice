@@ -7,7 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+//@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackages = {"boot.bootprac"})
 public class BootPracApplication {
