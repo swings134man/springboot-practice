@@ -36,6 +36,11 @@ dependencies {
 	implementation 'org.apache.poi:poi:5.2.2'                // .xls 확장자
 	implementation 'org.apache.poi:poi-ooxml:5.2.2'          // .xlsx 확장자
 	//runtimeOnly 'com.h2database:h2'
+
+	// jwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 }
 
 tasks.named('test') {
