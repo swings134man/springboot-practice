@@ -91,7 +91,7 @@ public class TokenProvider implements InitializingBean{
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    // 토큰 유효성 검증
+    // 토큰 유효성 검증 -> JwtFilter에서 검증.
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);

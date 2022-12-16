@@ -41,8 +41,10 @@ public class AuthController {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken); // UserdetailsServie - loadUserByUsername
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // 저장된 Authentication 으로 토큰 생성.
         String jwt = tokenProvider.createToken(authentication);
 
+        // Header에 토큰 return.
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 

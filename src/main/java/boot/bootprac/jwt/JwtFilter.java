@@ -26,6 +26,10 @@ import java.io.IOException;
  * 3. 있으면 Jwt 토큰값 추출
  * 4. 토큰 검증에 성공 했다면 (tokenProvider)
  * 5. Security context holder 에 저장. -> 권한 관리를 위해 저장.
+ *
+ * -----
+ * doFilter
+ * 1. 클라이언트 요청 -> doFilter 호출
  ************/
 public class JwtFilter extends GenericFilterBean {
 
@@ -45,7 +49,7 @@ public class JwtFilter extends GenericFilterBean {
         String jwt = resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        // 유효성 검증 후 authentication받아옴.
+        // 유효성 검증 후 authentication받아옴. (token Provider)
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
