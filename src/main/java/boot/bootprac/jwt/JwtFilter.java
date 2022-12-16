@@ -21,6 +21,11 @@ import java.io.IOException;
  * @author : SeokJun Kang(swings134@gmail.com)
  * @version : 1.0.0
  * @Description :
+ * 1. Header에서 Authorization 값 뽑아옴
+ * 2. 해당 값이 존재하는지 && Bearer 방식인지 체크
+ * 3. 있으면 Jwt 토큰값 추출
+ * 4. 토큰 검증에 성공 했다면 (tokenProvider)
+ * 5. Security context holder 에 저장. -> 권한 관리를 위해 저장.
  ************/
 public class JwtFilter extends GenericFilterBean {
 
@@ -33,7 +38,7 @@ public class JwtFilter extends GenericFilterBean {
         this.tokenProvider = tokenProvider;
     }
 
-    // 실제 피터링 로직 - 토큰의 인증저보를 SecurityContext에 저장.
+    // 실제 피터링 로직 - 토큰의 인증정보를 SecurityContext에 저장.
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;

@@ -53,8 +53,9 @@ public class TokenProvider implements InitializingBean{
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // 토큰 발급.
+    // 토큰 발급. -> AuthController 에서 호출.
     public String createToken(Authentication authentication) {
+        // 현재 사용자가 어떤 권한을 가지고 있는지 load (USER, ADMIN ...)
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -70,7 +71,7 @@ public class TokenProvider implements InitializingBean{
                 .compact();
     }
 
-    // 권한 가져오기.
+    // 권한 가져오기. -> 로그인이나 권한이 필요할때 해당 메서드 사용. -> JwtFilter에서 호출함.
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts
                 .parserBuilder()
@@ -79,6 +80,7 @@ public class TokenProvider implements InitializingBean{
                 .parseClaimsJws(token)
                 .getBody();
 
+        // 사용자가 어떤 Role 을 가지고 있는지. load 후 return (어떤것을 사용하는지 체크해야함.)
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
