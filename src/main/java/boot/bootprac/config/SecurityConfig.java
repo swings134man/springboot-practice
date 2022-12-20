@@ -82,14 +82,14 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/signup").permitAll()
-
-                .anyRequest().authenticated()
-
-                .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .antMatchers("/").permitAll();
+//                .antMatchers("/api/authenticate").permitAll()
+//                .antMatchers("/api/signup").permitAll()
+//
+//                .anyRequest().authenticated()
+//
+//                .and()
+//                .apply(new JwtSecurityConfig(tokenProvider));
 
         return httpSecurity.build();
     }

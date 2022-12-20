@@ -6,6 +6,15 @@
         <h1>Hello Spring</h1>
         <p>회원 기능</p>
         <p>
+            <form action="/api/authenticate" method="post">
+                <label for="username">아이디</label>
+                <input type="text" id="username" name="username" placeholder="아이디를 입력하세요">
+                <label for="password">패스워드</label>
+                <input type="text" id="password" name="password" placeholder="비밀번호를 입력하세요">
+                <button type="submit">로그인</button>
+            </form>
+            <br>
+
             <a href="/members/new">회원 가입</a>
             <a href="/members">회원 목록</a>
 
