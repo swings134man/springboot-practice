@@ -18,7 +18,8 @@ import java.util.UUID;
 @Slf4j
 public class FileService {
 
-    @Value("${file.dir}")
+//    @Value("${file.dir}")
+    @Value("servlet.multipart.location")
     private String fileDir;
 
     private final FileRepository fileRepository;

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -31,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> authorize(@RequestBody LoginDto loginDto) {
 
         // 토큰 생성
         UsernamePasswordAuthenticationToken authenticationToken =

@@ -8,6 +8,11 @@ group = 'boot'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+// For Docker - SB 2.5v 이후 jar file 2개 생성됨.(Docker image)
+jar {
+	enabled = false;
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -19,22 +24,23 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	implementation 'org.springframework.boot:spring-boot-devtools:2.7.0'
+	implementation 'org.springframework.boot:spring-boot-starter-security' //security
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'// thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-web' //web
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'   // security 5
+	implementation 'org.springframework.boot:spring-boot-starter-validation' //validation
+	compileOnly 'org.projectlombok:lombok'	//lombok
+	annotationProcessor 'org.projectlombok:lombok'	// lombok
+	testImplementation 'org.springframework.boot:spring-boot-starter-test' // starter test
+	testImplementation 'org.springframework.security:spring-security-test' //security test
+	implementation 'org.springframework.boot:spring-boot-devtools:2.7.0' //devtools
 	//implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'mysql:mysql-connector-java' // MySql
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // data- jpa
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8' // modelmapper
 	implementation 'org.apache.poi:poi:5.2.2'                // .xls 확장자
 	implementation 'org.apache.poi:poi-ooxml:5.2.2'          // .xlsx 확장자
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // javax - validation
 	//runtimeOnly 'com.h2database:h2'
 
 	// jwt
