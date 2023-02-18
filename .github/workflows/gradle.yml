@@ -17,8 +17,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  depoy: 
     runs-on: ubuntu-latest
 
     steps:
