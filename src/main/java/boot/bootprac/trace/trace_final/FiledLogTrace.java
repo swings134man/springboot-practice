@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
  * @author : SeokJun Kang(swings134@gmail.com)
  * @version : 3.0.0
  * @Description : Singleton으로 관리(Bean)는 다른 클래스에서 참조하도록함. -> LogTraceConfig.class
+ *
+ * -> Thread Local 사용하여 -> 동시성문제 해결.
  ************/
 @Slf4j
 public class FiledLogTrace implements LogTrace{
@@ -19,7 +21,9 @@ public class FiledLogTrace implements LogTrace{
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
-    private TraceId traceIdHolder; // 이전의 Trace -id, level를 저장. -> 다음 log사용시 활용 가능.
+    // 이전의 Trace -id, level를 저장. -> 다음 log사용시 활용 가능.
+    // Thread Local -> thread마다 각각 저장하여 사용(동시성문제 해결)
+    private ThreadLocal<TraceId> traceIdHolder = new ThreadLocal<>();
 
     @Override
     public TraceStatus begin(String message) {
@@ -27,7 +31,7 @@ public class FiledLogTrace implements LogTrace{
 
         // Trace info
         syncTraceId(); // added
-        TraceId traceId = this.traceIdHolder;
+        TraceId traceId = traceIdHolder.get(); //Thread Local get()
 
         // log 출력
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
@@ -45,10 +49,13 @@ public class FiledLogTrace implements LogTrace{
             -> TraceId를 필드에 저장하므로, 위의 feature에 따라 기능함.
      */
     private void syncTraceId() {
-        if(traceIdHolder == null) {
-            traceIdHolder = new TraceId();
+        // added - thread local
+        TraceId traceId = traceIdHolder.get();
+
+        if(traceId == null) {
+            traceIdHolder.set(new TraceId()); // Trace Id Create -> thread local.set
         }else {
-            traceIdHolder = traceIdHolder.createNextId();
+            traceIdHolder.set(traceId.createNextId());
         }
     }
 
@@ -90,12 +97,12 @@ public class FiledLogTrace implements LogTrace{
         - TraceHolder의 level 검사 -> 로그 출력 로직을 마치기 위해 사용.
      */
     private void releaseTraceId() {
-        TraceId traceId = this.traceIdHolder;
+        TraceId traceId = traceIdHolder.get();
 
         if(traceId.isFirstLevel()) { // 0
-            traceIdHolder = null;
+            traceIdHolder.remove(); //thread local 삭제
         }else {
-            traceIdHolder = traceId.createPreviousId(); // level -1
+            traceIdHolder.set(traceId.createPreviousId()); // thread local.set = level -1
         }
     }
 
