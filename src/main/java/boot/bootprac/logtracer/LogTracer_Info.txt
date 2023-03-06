@@ -23,4 +23,12 @@
 1. trace 패키지
     -> log 추적기를 위한 기반 데이터 파일 -> TraceId, TraceStatus -> boot패키지
 
+2. v1 패키지
+    -> Transaction Id 가 일정하지 않음.
+    -> Level(depth) 표시 되지 않음. -> Level 기능 존재X -> level=0
+    -> log 를 남기기 위해 code 가 생각보다 복잡하다. -> 추후 리팩토링.
+
+    - TODO: 메서드 호출 깊이 표현, HTTP 단위로 Transaction ID 일치, Loging code Refactoring
+
+3. v2 패키지
 
