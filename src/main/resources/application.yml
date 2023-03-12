@@ -48,6 +48,7 @@
 #jwt.token-validity-in-seconds=86400
 
 # yml setting
+# http://localhost:8080/swagger-ui.html
 spring:
   profiles:
     active: local
