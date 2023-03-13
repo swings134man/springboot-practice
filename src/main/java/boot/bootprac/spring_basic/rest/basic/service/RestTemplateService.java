@@ -28,7 +28,7 @@ import java.net.URI;
  *      1. post - Request Entity 사용시, Http Body -> object -> object mapper -> json -> rest template -> http body json으로 전송.
  *      2.
  *
- *  TODO : getForObject 관련 데이터 확인. generic Response 추가
+ *  TODO : generic Response 추가
  ************/
 @Service
 @RequiredArgsConstructor
@@ -172,7 +172,41 @@ public class RestTemplateService {
     }
 
 
+    // post - getForObject Test
+    public String getForObjectTest1() {
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:9090")
+                .path("/api/server/get1")
+                .encode()
+                .build()
+                .toUri();
 
+        RestTemplate restTemplate = new RestTemplate();
+
+        String forObject = restTemplate.getForObject(uri, String.class);
+
+        log.info("forObject Return : {}", forObject);
+
+        return forObject;
+    }
+
+    public ResponseEntity<String> get1Test() {
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:9090")
+                .path("/api/server/get1")
+                .encode()
+                .build()
+                .toUri();
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
+
+        log.info("return Entity : {}", forEntity);
+        log.info("return Header : {}", forEntity.getHeaders());
+        log.info("return Body : {}", forEntity.getBody());
+        log.info("return status code : {}", forEntity.getStatusCode());
+        return forEntity;
+    }//get1
 
 
 

@@ -66,4 +66,18 @@ public class RestTemplateController {
         return result;
     }
 
+    // GetForObject Test
+    @GetMapping("get/obj")
+    public String getForObject() {
+        String res = service.getForObjectTest1();
+        return res;
+    }
+
+    // getForEntity 전체 내용 Test
+    @GetMapping("get/entity")
+    public ResponseEntity<String> getForEntityTest() {
+        ResponseEntity<String> test = service.get1Test();
+        return test;
+    }
+
 }
