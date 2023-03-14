@@ -1,5 +1,6 @@
 package boot.bootprac.spring_basic.rest.basic.service;
 
+import boot.bootprac.config.RestTemplateConfig;
 import boot.bootprac.spring_basic.rest.basic.dto.RestUserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Map;
 
 /************
  * @info : Spring RestTemplate Service
@@ -18,6 +20,8 @@ import java.net.URI;
  * @author : SeokJun Kang(swings134@gmail.com)
  * @version : 1.0.0
  * @Description :
+ *
+ *  - RestTemplate 은 Bean 으로 생성하여 사용하거나, 최소 클래스당 한개를 생성하여 사용하는것이 좋은 방법이다. -> 리소스를 낭비할 필요가 없음.
  *
  *  - Header 추가, 핸들링할때는 -> exchange() 사용.
  *  - getForObject ->
@@ -35,6 +39,8 @@ import java.net.URI;
 @Slf4j
 public class RestTemplateService {
 
+    private final RestTemplateConfig restTemplate1;
+//    private final RestTemplate rest = new RestTemplate();
 
     // get
     public RestUserResponse getRest() {
@@ -51,9 +57,9 @@ public class RestTemplateService {
 
         System.out.println("완성된 url : " + uri.toString());
 
-        RestTemplate restTemplate = new RestTemplate();
+//        RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<RestUserResponse> forEntityResult = restTemplate.getForEntity(uri, RestUserResponse.class); // 결과.
+        ResponseEntity<RestUserResponse> forEntityResult = restTemplate1.restTemplate().getForEntity(uri, RestUserResponse.class); // 결과.
         return forEntityResult.getBody();
     } //test 용
 
@@ -66,8 +72,8 @@ public class RestTemplateService {
                 .build()
                 .toUri();
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
+//        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> forEntity = restTemplate1.restTemplate().getForEntity(uri, String.class);
 
         log.info("return 값 상태코드 : {}", forEntity.getStatusCode());
         log.info("return body : {}", forEntity.getBody());
@@ -85,8 +91,8 @@ public class RestTemplateService {
                 .build()
                 .toUri();
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
+//        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> forEntity = restTemplate1.restTemplate().getForEntity(uri, String.class);
 
         log.info("return 값 상태코드 : {}", forEntity.getStatusCode());
         log.info("return body : {}", forEntity.getBody());
@@ -104,8 +110,8 @@ public class RestTemplateService {
                 .expand("kingking3") // 복수의 값을 넣어야 할경우 , 을 추가하여 구분함.
                 .toUri();
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
+//        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> forEntity = restTemplate1.restTemplate().getForEntity(uri, String.class);
 
         log.info("return 값 상태코드 : {}", forEntity.getStatusCode());
         log.info("return body : {}", forEntity.getBody());
@@ -129,10 +135,10 @@ public class RestTemplateService {
         dto.setId("dto1Id");
         dto.setName("dto1Name");
 
-        RestTemplate restTemplate = new RestTemplate();
+//        RestTemplate restTemplate = new RestTemplate();
 
         // 내부적으로, uri, dto(RequestBody로 인식) 필요함
-        ResponseEntity<RestUserResponse> result = restTemplate.postForEntity(uri, dto, RestUserResponse.class);
+        ResponseEntity<RestUserResponse> result = restTemplate1.restTemplate().postForEntity(uri, dto, RestUserResponse.class);
 
         log.info("return 값 상태코드 : {}", result.getStatusCode());
         log.info("return body : {}", result.getBody());
@@ -160,10 +166,10 @@ public class RestTemplateService {
                 .header("server-header", "HeaderName") //Header key= Header Name
                 .body(dto);
 
-        RestTemplate restTemplate = new RestTemplate();
+//        RestTemplate restTemplate = new RestTemplate();
 
         // Header를 설정을 해줄때는 exchange를 사용. - Request Entity 에서 header,body,uri를 설정해 주었음.
-        ResponseEntity<RestUserResponse> exchange = restTemplate.exchange(requestEntity, RestUserResponse.class);
+        ResponseEntity<RestUserResponse> exchange = restTemplate1.restTemplate().exchange(requestEntity, RestUserResponse.class);
 
         log.info("return 값 상태코드 : {}", exchange.getStatusCode());
         log.info("return body : {}", exchange.getBody());
@@ -181,9 +187,9 @@ public class RestTemplateService {
                 .build()
                 .toUri();
 
-        RestTemplate restTemplate = new RestTemplate();
+//        RestTemplate restTemplate = new RestTemplate();
 
-        String forObject = restTemplate.getForObject(uri, String.class);
+        String forObject = restTemplate1.restTemplate().getForObject(uri, String.class);
 
         log.info("forObject Return : {}", forObject);
 
@@ -198,8 +204,8 @@ public class RestTemplateService {
                 .build()
                 .toUri();
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
+//        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> forEntity = restTemplate1.restTemplate().getForEntity(uri, String.class);
 
         log.info("return Entity : {}", forEntity);
         log.info("return Header : {}", forEntity.getHeaders());
@@ -209,6 +215,16 @@ public class RestTemplateService {
     }//get1
 
 
+    public double exchangeApi() {
+        String forObject = restTemplate1.restTemplate().getForObject("https://open.er-api.com/v6/latest", String.class);
 
+        Map<String, Map<String, Double>> map = restTemplate1.restTemplate().getForObject("https://open.er-api.com/v6/latest", Map.class);
+
+        log.info("Dollar -> KRW = {}", map.get("rates").get("KRW"));
+
+        double rrr = map.get("rates").get("KRW");
+
+        return rrr;
+    }
 
 }//class

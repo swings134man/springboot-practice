@@ -80,4 +80,10 @@ public class RestTemplateController {
         return test;
     }
 
+    @GetMapping("get/exchange")
+    public double exchange() {
+        double res = service.exchangeApi();
+        return res;
+    }
+
 }
