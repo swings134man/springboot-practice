@@ -1,13 +1,13 @@
 package boot.bootprac.spring_basic.rest.basic.service;
 
 import boot.bootprac.config.RestTemplateConfig;
+import boot.bootprac.spring_basic.rest.basic.dto.ResGeneric;
 import boot.bootprac.spring_basic.rest.basic.dto.RestUserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -30,7 +30,19 @@ import java.util.Map;
  *
  *  1. post
  *      1. post - Request Entity 사용시, Http Body -> object -> object mapper -> json -> rest template -> http body json으로 전송.
- *      2.
+ *      2. postForLocation() : POST 요청 전송, 결과로 Header에 저장된 URI를 결과로 Return 받는다.
+ *
+ *  2. put
+ *      1. put() 사용
+ *
+ *  3. exchange()
+ *      1. HTTP 헤더를 만들 수 있고, 어떠한 HTTP 메서드도 사용 가능하다.
+ *
+ *  4. excute()
+ *      1. Request/Response 콜백을 수정 할 수 있다.
+ *      2. getForObject(), postForObject()는 execute()를 내부적으로 호출한다.
+ *
+ *  5. optionForAllow : 주어진 URL 주소에서 지원하는 HTTP 메서드를 조회한다.
  *
  *  TODO : generic Response 추가
  ************/
@@ -166,7 +178,13 @@ public class RestTemplateService {
                 .header("server-header", "HeaderName") //Header key= Header Name
                 .body(dto);
 
-//        RestTemplate restTemplate = new RestTemplate();
+        // Header 의 사용의 또다른 예제
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Header Name", "Header Value");
+//        HttpEntity request = new HttpEntity(headers); // Http Entity Request에 header를 넣어줌.
+//        // -> 이어서 restTemplate.exchange()
+//        restTemplate1.restTemplate().exchange(uri, HttpMethod.POST, request, String.class); // uri, Http Methods, Http Request Entity, Type을 지정해주면된다.
+
 
         // Header를 설정을 해줄때는 exchange를 사용. - Request Entity 에서 header,body,uri를 설정해 주었음.
         ResponseEntity<RestUserResponse> exchange = restTemplate1.restTemplate().exchange(requestEntity, RestUserResponse.class);
@@ -178,7 +196,7 @@ public class RestTemplateService {
     }
 
 
-    // post - getForObject Test
+    // post - getForObject Response에 대한 Test
     public String getForObjectTest1() {
         URI uri = UriComponentsBuilder
                 .fromUriString("http://localhost:9090")
@@ -196,6 +214,7 @@ public class RestTemplateService {
         return forObject;
     }
 
+    // GetForEntity 의 Response값에 대한 Test 및 예제
     public ResponseEntity<String> get1Test() {
         URI uri = UriComponentsBuilder
                 .fromUriString("http://localhost:9090")
@@ -215,6 +234,8 @@ public class RestTemplateService {
     }//get1
 
 
+    // Open API - 환율
+    // USD 달러 기준 -> 각 통화 환율정보를 제공하는 API
     public double exchangeApi() {
         String forObject = restTemplate1.restTemplate().getForObject("https://open.er-api.com/v6/latest", String.class);
 
@@ -225,6 +246,44 @@ public class RestTemplateService {
         double rrr = map.get("rates").get("KRW");
 
         return rrr;
+    }// exchangeApi
+
+
+    // Generic Type Return
+    // RestTemplate의 응답 탕ㅂ을 지정할 때 사용.
+    public ResGeneric<RestUserResponse> genericResponse() {
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:9090")
+                .path("/api/server/user")
+                .queryParam("id", "test1")
+                .queryParam("name", "test11")
+                .encode()
+                .build()
+                .toUri();
+
+        // request DTO
+        RestUserResponse dto = new RestUserResponse();
+        dto.setId("dto1Id");
+        dto.setName("dto1Name");
+
+        // DTO 를 T Generic Type DTO에 set
+        ResGeneric<RestUserResponse> reqDTO = new ResGeneric<>();
+        reqDTO.setHeader(new ResGeneric.Header());
+        reqDTO.setResBody(dto);
+
+        // Request Entity
+        RequestEntity<ResGeneric<RestUserResponse>> requestEntity = RequestEntity
+                .post(uri)
+                .header("server-header", "HeaderName")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(reqDTO);
+
+        ResponseEntity<ResGeneric<RestUserResponse>> exchange = restTemplate1.restTemplate()
+                .exchange(requestEntity, new ParameterizedTypeReference<>() {
+                });
+        return exchange.getBody();
+
     }
+
 
 }//class
