@@ -13,12 +13,14 @@
     - 한 마디로 AOP를 적용할 수 있는 모든 지점(스프링에서는 메서드 실행 지점으로 제한 함.)
 
 3. Advice
+    - Aspect를 언제 코드에 적용할지 정의함. -> 시점 정의
     - join point 에서 실행되는 code -> 즉 부가기능 그 자체를 뜻함.
-    - Aspect를 언제 코드에 적용할지 정의함.
 
 4. Point Cut
+    - join point의 부분집합이며, '실제 Advice가' 적용되는 JoinPoint를 나타냄.
     - join point 중 Advice가 적용될 지점을 선별하는 기능
-    - 주로 AspectJ 표현식으로 지정함.
+    - 주로 AspectJ 표현식으로 지정함.(또는 정규 표현식)
+        -> 해당 문법을 통해 Point Cut 정의함.
 
 5. Target
     - 핵심 기능을 담은 모듈 (= 부가 기능 부여 대상)
@@ -39,4 +41,10 @@
      @Around : Before / After 모두 제어
 
 
-* --------------------------------------------------------------------------------------------
+* Methods --------------------------------------------------------------------------------------------
+
+    - Before : Method 시작 시 동작.
+    - After : Method 종료 후 동작.
+    - AfterReturning : Method 정상 종료시 동작.
+    - Around : Method 호출 전후 동작 (proceed() 기준으로 전은 before, 후는 after임 -> 순서 지켜야함.
+    - AfterThrowing : Method 호출이 예외를 던졌을 때.

@@ -59,7 +59,6 @@ public class AopRestController {
         return res;
     }
 
-
     @PostMapping("v2/post")
     public UserVO postTest2(@RequestBody UserVO vo) throws InterruptedException {
 //        log.info("request VO = {} ", vo); // MethodCheckAOP.class 에서 입력 Param, return Value Check 후 Log 출력
@@ -69,4 +68,13 @@ public class AopRestController {
 //        res.setPhone(vo.getPhone());
         return vo;
     }
+
+    @PostMapping("v1/ex")
+    public String postThrowTest(@RequestParam String msg) {
+        if(msg.equals("ex")) {
+            throw new RuntimeException("Parameter is not allowed");
+        }
+        return msg;
+    }
+
 }

@@ -48,6 +48,7 @@ public class TimerAop {
 
         // Object Return 시 (리턴 데이터가 존재하면), Object로 Return
         // void 의 경우 return 없음.
+        // Proceed() 기점으로 before, 이후로 after 임. (순서 조심.)
         Object proceed = joinPoint.proceed(); //proceed() -> 메서드 실행.
 
         // Return after
@@ -59,11 +60,6 @@ public class TimerAop {
     }
 
     /**
-     * 해당 어노테이션은 @Timer 사용시, MethodCheckAOP 클래스에서의 리턴값을 확인할 수 없으므로
-     * ,@Timer 어노테이션을 사용하는 메서드는 해당 메서드를 통해 리턴값을 확인할 수 있다.
-     *
-     * @param joinPoint
-     * @param returnObj
      * @Deprecated aroundMethods() 에서 proceed값을 return(Object) 하면 해결됨으로 Deprecated
      */
 //    @AfterReturning(value = "cut() && enableTimer()", returning = "returnObj")

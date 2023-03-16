@@ -2,10 +2,7 @@ package boot.bootprac.aop.first.aop_config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
@@ -60,4 +57,11 @@ public class MethodCheckAOP {
         }
     }// after Method
 
+    /**
+     * Throw 발생시, 동작
+     */
+    @AfterThrowing(value = "cut()", throwing = "ex")
+    public void afterThrowing(Throwable ex) {
+        log.info("AOP TRACKER : Exception: {} -> message : {}",ex.getClass().getSimpleName(), ex.getMessage());
+    }
 }
