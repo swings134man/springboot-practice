@@ -41,7 +41,7 @@ public class TimerAop {
 
     // Around (before/after)를 적용해야 메서드의 실행시간을 측정가능 -> 종료시간 - 시작시간 이기때문.
     @Around("cut() && enableTimer()")
-    public void aroundMethods(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object aroundMethods(ProceedingJoinPoint joinPoint) throws Throwable {
         // Method Start
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -54,17 +54,21 @@ public class TimerAop {
         stopWatch.stop();
 
         log.info("AOP TIMER : Total Run Time = {}", stopWatch.getTotalTimeSeconds());
+
+        return proceed; // Method
     }
 
     /**
      * 해당 어노테이션은 @Timer 사용시, MethodCheckAOP 클래스에서의 리턴값을 확인할 수 없으므로
      * ,@Timer 어노테이션을 사용하는 메서드는 해당 메서드를 통해 리턴값을 확인할 수 있다.
+     *
      * @param joinPoint
      * @param returnObj
+     * @Deprecated aroundMethods() 에서 proceed값을 return(Object) 하면 해결됨으로 Deprecated
      */
-    @AfterReturning(value = "cut() && enableTimer()", returning = "returnObj")
-    public void afterRun(JoinPoint joinPoint, Object returnObj) {
-        log.info("AOP TIMER : Return Value = {}", returnObj);
-    }
+//    @AfterReturning(value = "cut() && enableTimer()", returning = "returnObj")
+//    @Deprecated public void afterRun(JoinPoint joinPoint, Object returnObj) {
+//        log.info("AOP TIMER : Return Value = {}", returnObj);
+//    }
 
 }
