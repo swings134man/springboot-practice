@@ -48,5 +48,12 @@ public class MethodCheckAOP {
         }
     }//before
 
+    @AfterReturning(value = "cut()", returning = "returnObj")
+    public void afterMethod(JoinPoint joinPoint, Object returnObj) {
+//        if(returnObj != null) {
+            log.info("AOP Return joinpoint : {}", joinPoint);
+            log.info("AOP Return Value : {}", returnObj);
+//        }
+    }// after Method
 
 }
