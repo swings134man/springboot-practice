@@ -53,12 +53,18 @@ public class TimerAop {
         // Return after
         stopWatch.stop();
 
-        log.info("AOP Total Run Time = {}", stopWatch.getTotalTimeSeconds());
+        log.info("AOP TIMER : Total Run Time = {}", stopWatch.getTotalTimeSeconds());
     }
 
-    @AfterReturning(value = "cut()", returning = "returnObj")
+    /**
+     * 해당 어노테이션은 @Timer 사용시, MethodCheckAOP 클래스에서의 리턴값을 확인할 수 없으므로
+     * ,@Timer 어노테이션을 사용하는 메서드는 해당 메서드를 통해 리턴값을 확인할 수 있다.
+     * @param joinPoint
+     * @param returnObj
+     */
+    @AfterReturning(value = "cut() && enableTimer()", returning = "returnObj")
     public void afterRun(JoinPoint joinPoint, Object returnObj) {
-        log.info("AOP Timer Return Value = {}", returnObj);
+        log.info("AOP TIMER : Return Value = {}", returnObj);
     }
 
 }
