@@ -51,4 +51,39 @@ public class JwtRequestService {
         return exchange;
     }// request v1
 
-}
+
+    // get With token
+    public ResponseEntity<String> getWithTokenS(String header, String param) {
+        String[] s = header.split(" ");
+        log.info("test : 0 ={}", s[0]); // Bearer
+        log.info("test : 0 ={}", s[1]); // AT
+
+        if(!s[0].equals("Bearer") || s[1] == null) {
+            throw new IllegalStateException("유효한 Header 값이 아닙니다.");
+        }
+
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:9090")
+                .path("/api/jwt/v1/getWithToken")
+                .queryParam("param", param)
+                .encode()
+                .build()
+                .toUri();
+
+
+        // Request Entity
+        RequestEntity<Void> entity = RequestEntity
+                .get(uri)
+                .header("Authorization", "Bearer " + s[1])
+                .build();
+
+        ResponseEntity<String> exchange = restTemplate.restTemplate().exchange(entity, String.class);
+
+        log.info("JWT RESPONSE {}", exchange.getHeaders());
+        log.info("JWT RESPONSE {}", exchange.getBody());
+
+        return exchange;
+    }
+
+
+}//class
