@@ -37,7 +37,7 @@ public class JwtServerService {
                 .statusCode("200")
                 .msg("Token 생성 완료")
                 .token_type("Bearer")
-                .expireTime("30Sec")
+                .expireTime(tokenResult.get("expired_time"))
                 .build();
 
         return outDTO;
@@ -48,7 +48,10 @@ public class JwtServerService {
         // Header : Authorization - Bearer {Token}
         String[] headerSplit = header.split(" "); //0=Bearer, 1=Token Value
 
-        jwtProviderServer.validateToken(headerSplit[1]);
+        boolean tokenVali = jwtProviderServer.validateToken(headerSplit[1]);
+        if(!tokenVali) {
+            throw new RuntimeException("해당 Token Expired 됨.");
+        }
 
         return param;
     }//getWithToken

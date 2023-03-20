@@ -34,15 +34,18 @@ public class JwtProvider_server {
      * Token 유효성 검증 Logic
      * @param token(String)
      */
-    public void validateToken(String token) {
+    public boolean validateToken(String token) {
+        boolean status = false;
         try {
             JWT.require(ALGORITHM_DECODE)
                     .build()
                     .verify(token);
-
+            return true;
         }catch (Exception e){
             log.warn("토큰이 유효하지 않습니다. {}", e.getMessage());
+            return status;
         }
+
     }// Token 유효성 검증
 
 
@@ -53,6 +56,8 @@ public class JwtProvider_server {
      */
     public Map<String, String> generateToken(JwtRequestServerDTO inDTO) {
         Map<String, String> map = new HashMap<>();
+        // Date
+        Date date = new Date(System.currentTimeMillis() + (30 * 1000));
 
         if(inDTO.getUserId().equals("null") || inDTO.equals("")) {
             throw new NullPointerException("JwtRequestServerDTO userId=null");
@@ -62,10 +67,13 @@ public class JwtProvider_server {
         String token = JWT.create()
                 .withSubject(inDTO.getUserId())
                 .withClaim("userId", inDTO.getUserId())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (30 * 1000))) // Expire=30초
+                .withExpiresAt(date)// Expire=30초
                 .sign(ALGORITHM_DECODE);
 
+
+
         map.put("access_token", token);
+        map.put("expired_time", String.valueOf(date));
         // TODO : Refresh Token 추가 예정.
 
         return map;
