@@ -110,7 +110,21 @@ public class JwtProvider_server {
             log.warn("Refresh Token이 Expired 됨. 재 로그인 필요.");
             return null;
         }
+    } // RT Valid and Returning New AT
 
+    // Only Check RT
+    public boolean checkOnlyRt(String refreshToken) {
+        boolean status = false;
+
+        try{
+            DecodedJWT verify = JWT.require(ALGORITHM_DECODE)
+                    .build()
+                    .verify(refreshToken);
+            return true;
+        }catch (Exception e) {
+            log.warn("Refresh 유효하지 않음. -> AT 재발급 필요.");
+            return status;
+        }
     }
 
 }//class

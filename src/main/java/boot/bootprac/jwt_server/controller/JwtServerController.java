@@ -10,6 +10,7 @@ import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /************
@@ -82,6 +83,21 @@ public class JwtServerController {
 
         return ResponseEntity.ok().header("Access_token", withToken2.get("newAT"))
                 .body(withToken2.get("returnValue"));
+    }// AT, RT Check
+
+    // AOP 를 통한 Token 값 확인 후 요청 로직 수행.
+    @GetMapping("v3/getWith")
+    public Map<String, String> aopGetWith(@RequestHeader("Authorization") String at,
+                                          @RequestHeader("refresh") String rt,
+                                          @RequestParam String param) {
+
+        log.info("AOP Controller 호출 됨.");
+        log.info("AOP Controller Param = {}", param);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("returnValue", param);
+
+        return map;
     }
 
 }//class
