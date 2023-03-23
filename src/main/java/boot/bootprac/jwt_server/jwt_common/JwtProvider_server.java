@@ -3,6 +3,10 @@ package boot.bootprac.jwt_server.jwt_common;
 import boot.bootprac.jwt_server.domain.JwtRequestServerDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.AlgorithmMismatchException;
+import com.auth0.jwt.exceptions.InvalidClaimException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
@@ -72,6 +76,7 @@ public class JwtProvider_server {
 
     /**
      * Token 유효성 검증 Logic
+     * -> Refactor(2023.03.24): Exception 처리 (JWT/JWTVerifier/verify())에 Exception 종류 포함되어있음.
      * @param at(Access Token)
      */
     public boolean validateToken(String at) {
@@ -81,14 +86,28 @@ public class JwtProvider_server {
                     .build()
                     .verify(at);
             return true;
-        }catch (Exception e){
-            log.warn("토큰이 유효하지 않습니다. {}", e.getMessage());
+        }catch (AlgorithmMismatchException ale) {
+            log.warn("Token Header에 명시된 알고리즘과 다릅니다.");
+            return status;
+        }catch (SignatureVerificationException sve) {
+            log.warn("Token의 서명(Signature)이 유효하지 않습니다.");
+            return status;
+        }catch (TokenExpiredException tee) {
+            log.warn("해당 Token은 Expired 되었습니다.");
+            return status;
+        }catch (InvalidClaimException ice) {
+            log.warn("Claim의 기대값과는 다른값이 존재합니다. = {}", ice.getMessage());
             return status;
         }
 
+//        catch (Exception e){
+//            log.warn("토큰이 유효하지 않습니다. {}", e.getMessage());
+//            return status;
+//        }
     }// Token 유효성 검증
 
     // RT Valid
+    // Refactoring : Exception Handling(2023.03.24)
     public String refreshTokenValidation(String refreshToken) {
         try{
             DecodedJWT verify = JWT.require(ALGORITHM_DECODE)
@@ -106,10 +125,24 @@ public class JwtProvider_server {
                     .sign(ALGORITHM_DECODE);
 
             return token;
-        }catch (Exception e) {
-            log.warn("Refresh Token이 Expired 됨. 재 로그인 필요.");
+        }catch (AlgorithmMismatchException ale) {
+            log.warn("Token Header에 명시된 알고리즘과 다릅니다.");
+            return null;
+        }catch (SignatureVerificationException sve) {
+            log.warn("Token의 서명(Signature)이 유효하지 않습니다.");
+            return null;
+        }catch (TokenExpiredException tee) {
+            log.warn("해당 Refresh Token은 Expired 되었습니다.");
+            return null;
+        }catch (InvalidClaimException ice) {
+            log.warn("Claim의 기대값과는 다른값이 존재합니다. = {}", ice.getMessage());
             return null;
         }
+
+//        catch (Exception e) {
+//            log.warn("Refresh Token이 Expired 됨. 재 로그인 필요.");
+//            return null;
+//        }
     } // RT Valid and Returning New AT
 
     // Only Check RT
@@ -121,10 +154,23 @@ public class JwtProvider_server {
                     .build()
                     .verify(refreshToken);
             return true;
-        }catch (Exception e) {
-            log.warn("Refresh 유효하지 않음. -> AT 재발급 필요.");
+        }catch (AlgorithmMismatchException ale) {
+            log.warn("Token Header에 명시된 알고리즘과 다릅니다.");
+            return status;
+        }catch (SignatureVerificationException sve) {
+            log.warn("Token의 서명(Signature)이 유효하지 않습니다.");
+            return status;
+        }catch (TokenExpiredException tee) {
+            log.warn("Refresh 유효하지 않음.(Expired) -> AT 재발급 필요.");
+            return status;
+        }catch (InvalidClaimException ice) {
+            log.warn("Claim의 기대값과는 다른값이 존재합니다. = {}", ice.getMessage());
             return status;
         }
-    }
+//        catch (Exception e) {
+//            log.warn("Refresh 유효하지 않음. -> AT 재발급 필요.");
+//            return status;
+//        }
+    }// checkOnlyRt
 
 }//class
