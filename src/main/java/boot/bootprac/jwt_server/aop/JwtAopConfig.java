@@ -1,6 +1,7 @@
 package boot.bootprac.jwt_server.aop;
 
 import boot.bootprac.jwt_server.jwt_common.JwtProvider_server;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -43,14 +44,11 @@ public class JwtAopConfig {
         String at = (String) args[0];
         String rt = (String) args[1];
 
-        log.info("at {}", at);
-        log.info("rt {}", rt);
+//        String[] atRes = at.split(" ");
+//        String[] rtRes = rt.split(" ");
 
-        String[] atRes = at.split(" ");
-        String[] rtRes = rt.split(" ");
-
-        // 2. Token 형식 Check
-        if(!atRes[0].equals("Bearer") || !rtRes[0].equals("Bearer")) {
+        // 2. Token 형식 Check - 2023.03.24(Refactoring if 조건)
+        if(!at.split(" ")[0].equals("Bearer") || !rt.split(" ")[0].equals("Bearer")) {
             throw new RequestRejectedException("토큰 요청형식이 잘못됨 : Bearer");
         }else if(at.isEmpty() || rt.isEmpty()) {
             throw new RequestRejectedException("요청 토큰값이 존재하지 않음.");
@@ -65,11 +63,12 @@ public class JwtAopConfig {
 
             // RT 만료시
             if(newAT.equals("null")) {
-                throw new IllegalArgumentException("Refresh Token 만료 재로그인 필요");
+                throw new TokenExpiredException("Refresh Token 만료 재로그인 필요");
             }
         }
 
         // 5. Method 실행.
+        // Return Object + 새로 발급한 Access_token 추가 Return.
         Map<String, String> proceed = (Map)joinPoint.proceed();
         proceed.put("access_token", newAT);
 

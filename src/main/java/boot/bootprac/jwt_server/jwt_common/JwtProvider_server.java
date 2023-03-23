@@ -18,22 +18,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 /************
- * @info : Jwt Server Side 공통 Logic
+ * @info : Jwt Server Side Token 공통 Logic
  * @name : JwtProvider_server
  * @date : 2023/03/20 5:58 PM
  * @author : SeokJun Kang(swings134@gmail.com)
  * @version : 1.0.0
- * @Description :
+ * @Description : Token 발급, 검증 공통 로직 클래스.
+ *
+ *  - Type : JWT
+ *  - algorithm : HMAC256
+ *  - Secret Key : JwtServerAPItestSecretKEY(Base64)
+ *
+ *  - JWT 3 part Ex : Header(Base64).payload(Base64).secret
  ************/
 @Slf4j
 @Component
 public class JwtProvider_server {
 
-    // SECRET_KEY
+    // SECRET_KEY - yml 파일이나, 노출되지 않는곳에 보관하여야 함.
     private static String SECRET_KEY =
             Base64.getEncoder().encodeToString("JwtServerAPItestSecretKEY".getBytes());
 
-    // Decode Algorithm
+    // Decode Algorithm - 서명
+    // - Secret Key(암호화키)를 알고리즘을 통해서 암호화.
+    // - 알고리즘과 어떤 인코딩인지 알아도 -> 시크릿키의 내용을 모르면 Decode 할 수 없음.
     private static final Algorithm ALGORITHM_DECODE = Algorithm.HMAC256(SECRET_KEY);
 
 
@@ -84,7 +92,7 @@ public class JwtProvider_server {
         try {
             JWT.require(ALGORITHM_DECODE)
                     .build()
-                    .verify(at);
+                    .verify(at); // Algorithm.HMAC256(SECRET_KEY) 또한 가능.
             return true;
         }catch (AlgorithmMismatchException ale) {
             log.warn("Token Header에 명시된 알고리즘과 다릅니다.");
@@ -106,8 +114,19 @@ public class JwtProvider_server {
 //        }
     }// Token 유효성 검증
 
-    // RT Valid
-    // Refactoring : Exception Handling(2023.03.24)
+
+    /**
+     * @info    : RT 검증 및 새로운 AT 발급
+     * @name    : refreshTokenValidation
+     * @date    : 2023/03/24 1:57 AM
+     * @author  : SeokJun Kang(swings134@gmail.com)
+     * @version : 1.0.0
+     * @param   :
+     * @return  :
+     * @Description : Refactoring : Exception Handling(2023.03.24)
+     * - RT 검증과 검증결과에 따른 새로운 AT 발급 및 Return
+     * - 새로운 AT 존재하지 않을시 : null Return
+     */
     public String refreshTokenValidation(String refreshToken) {
         try{
             DecodedJWT verify = JWT.require(ALGORITHM_DECODE)
@@ -143,9 +162,19 @@ public class JwtProvider_server {
 //            log.warn("Refresh Token이 Expired 됨. 재 로그인 필요.");
 //            return null;
 //        }
-    } // RT Valid and Returning New AT
+    }
 
-    // Only Check RT
+
+    /**
+     * @info    : Only Check RT
+     * @name    : checkOnlyRt
+     * @date    : 2023/03/24 1:56 AM
+     * @author  : SeokJun Kang(swings134@gmail.com)
+     * @version : 1.0.0
+     * @param   : refreshToken(String) - Only Token Value(!NOT INCLUDED Bearer!)
+     * @return  : boolean
+     * @Description : RT 의 체크만 수행함.
+     */
     public boolean checkOnlyRt(String refreshToken) {
         boolean status = false;
 

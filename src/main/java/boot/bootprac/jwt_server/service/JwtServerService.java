@@ -27,7 +27,16 @@ public class JwtServerService {
     private final JwtProvider_server jwtProviderServer;
     private final JwtServerRepository repository;
 
-    // Login - Token 생성
+
+    /**
+     * @info    : Login - Token 생성
+     * @name    : loginWithToken
+     * @date    : 2023/03/24 1:45 AM
+     * @author  : SeokJun Kang(swings134@gmail.com)
+     * @version : 1.0.0
+     * @param   : JwtRequestServerDTO
+     * @Description : AT,RT Token 생성 로직 (로그인)
+     */
     public JwtResponseServerDTO loginWithToken(JwtRequestServerDTO inDTO) {
         // 예외 - > NULL Check는 Controller Layer에서 이루어짐.
 
@@ -46,7 +55,17 @@ public class JwtServerService {
         return outDTO;
     }// loginWithToken
 
-    // Token 검증 및 사용예시
+
+    /**
+     * @info    : Token 검증 및 사용예시
+     * @name    : getWithToken
+     * @date    : 2023/03/24 1:44 AM
+     * @author  : SeokJun Kang(swings134@gmail.com)
+     * @version : 1.0.0
+     * @param   : header(Token Value)
+     * @param   : param(String)
+     * @Description : 해당 GET 요청시 AT 검증 후 성공시에만 Return
+     */
     public String getWithToken(String header, String param) {
         // Header : Authorization - Bearer {Token}
         String[] headerSplit = header.split(" "); //0=Bearer, 1=Token Value
@@ -59,7 +78,13 @@ public class JwtServerService {
         return param;
     }//getWithToken
 
-    // Token - AT, RT
+    /**
+     * Token - AT, RT를 통한 검증 및 GET 로직 수행.
+     * @param at(Access_token)
+     * @param rt(Refresh_token)
+     * @param param(String)
+     * @return
+     */
     public Map<String, String> getWithToken2(String at, String rt, String param)  {
         String newAT = "";
         // 1. AT 검증.
