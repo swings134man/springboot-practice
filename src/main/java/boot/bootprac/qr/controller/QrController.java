@@ -7,13 +7,18 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.Files;
 
 /************
  * @info : QR Code 생성 및 제공 Controller
@@ -51,6 +56,69 @@ public class QrController {
         }//catch
 
         return null;
+    }// QR : Tistory Link
+
+
+
+    @GetMapping("/qr/image")
+    public ResponseEntity<byte[]> qrToImage() throws WriterException, IOException{
+        String text = "http://localhost:8080/qr/get/image";
+
+        // QR
+        int width = 200;
+        int height = 200;
+
+        BitMatrix encode = new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height);
+
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            MatrixToImageWriter.writeToStream(encode, "PNG", outputStream);
+
+            return
+                ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_PNG)
+                        .body(outputStream.toByteArray());
+        }catch (Exception e){
+            log.warn("QR Code Exceptions {}", e.getMessage());
+        }
+        return null;
     }
+
+    // Image File Response
+    @GetMapping("/qr/get/image")
+    public ResponseEntity<byte[]> name() throws IOException {
+        // Image name - ImageFile to Byte[]
+        String imageName = "java_logo_icon.png";
+        byte[] byteFile = getImageBye(imageName);
+
+        // Header
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "image/png");
+        headers.add("Content-Length", String.valueOf(byteFile.length));
+
+        // Return
+        return new ResponseEntity<byte[]>(byteFile, headers, HttpStatus.OK);
+    }
+
+        // Image to Byte[]
+        private byte[] getImageBye(String imageName) throws IOException{
+            // image 경로 및 File
+            ClassPathResource classPathResource = new ClassPathResource("static/images/"+ imageName);
+            File file = classPathResource.getFile();
+
+            byte[] byteImage = null;
+
+            BufferedImage originalImage = null;
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            originalImage = ImageIO.read(file);
+            ImageIO.write(originalImage, "png", out);
+            out.flush();
+
+            byteImage = out.toByteArray();
+            return byteImage;
+        }
+
 
 }
