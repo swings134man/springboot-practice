@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /************
  * @info : File Or Image Convert 후 REST API Return Test Controller
@@ -38,11 +40,11 @@ public class ImageConvertTest {
         byte[] bytes2 = solution3();
 
         // Byte Image Return
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(bytes2);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(bytes);
     }
 
 
-    // Files readAllBytes()
+    // 1. Files readAllBytes()
     private byte[] solution1() {
         // File Path
         String filePath = "src/main/resources/static/images/java_logo_icon.png";
@@ -55,7 +57,7 @@ public class ImageConvertTest {
         return byteFile;
     }
 
-    // ByteStream toByteArray()
+    // 2. ByteStream toByteArray()
     private byte[] solution2() throws IOException {
         File file = new File("src/main/resources/static/images/java_logo_icon.png");
         byte[] byteFile = null;
@@ -75,7 +77,7 @@ public class ImageConvertTest {
     }
 
 
-    // Image File을 Byte[] 로 얻기.
+    // 3. Image File을 Byte[] 로 얻기.
     private byte[] solution3() throws IOException {
         String filePath = "src/main/resources/static/images/java_logo_icon.png";
         File file = new File(filePath);
@@ -98,4 +100,21 @@ public class ImageConvertTest {
         return byteImage;
     }
 
-}
+    // 4. byte Image 다건.
+    private byte[][] multiple() throws IOException {
+        // TODO : Client 에서 byte[][] 또는 List로 받은 후 Parsing 하는 방법을 사용해야 할 것 같음.
+        // File Path
+        String filePath = "src/main/resources/static/images"; // 2
+
+//        byte[] byteFiles = Files.readAllBytes(Path.of(filePath)); // 해당 경로의 모든 파일 byte Read
+//        return byteFiles;
+
+        byte[][] allImages = new byte[2][];
+        Path imageFolder = Paths.get("src/main/resources/static/images");
+        allImages[0] = Files.readAllBytes(imageFolder.resolve("chrome.png"));
+        allImages[1] = Files.readAllBytes(imageFolder.resolve("java_logo_icon.png"));
+
+        return allImages;
+    }
+
+}//class
