@@ -98,6 +98,7 @@ public class QrController {
         headers.add("Content-Length", String.valueOf(byteFile.length));
 
         // Return
+        // ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(bytes); <-> Same
         return new ResponseEntity<byte[]>(byteFile, headers, HttpStatus.OK);
     }
 
