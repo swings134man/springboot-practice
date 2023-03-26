@@ -1,9 +1,16 @@
 # springboot-practice
 
+## About Repository 
+> Spring Boot 환경에 익숙해지기 위해, 활용 할 수 있는 다양한 Library, 방법들을
+  
+> 공부, 적용 해보기 위한 Repositroy 입니다. 
+
+
 ## Skill Set
 - Spring Boot
 - Spring Security 
 - Spring Batch
+- JWT OATUH 2.0
 - AWS EC2
 - AWS RDS
 - Docker 
@@ -25,6 +32,6 @@
 ## Currently Test List
 1. Spring Boot Excel 
 2. Spring File Server 
-3. Spring JWT 
+3. Spring JWT (Server, Client Side)
 4. Spring - Docker - AWS CI/CD 파이프라인 구축
 5. Spring Boot Log 추적기 
