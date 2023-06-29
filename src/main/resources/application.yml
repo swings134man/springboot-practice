@@ -69,7 +69,8 @@ spring:
 jwt:
   header: Authorization
   secret: bHVjYXNLYW5nLXRlY2gtc3ByaW5nLWJvb3Qtand0LXR1dG9yaWFsLXNlY3JldC1sdWNhc0thbmctdGVjaC1zcHJpbmctYm9vdC1qd3QtdHV0b3JpYWwtc2VjcmV0Cg==
-  token-validity-in-seconds: 86400
+  token-validity-in-seconds: 1800 # 30min
+  token-validity-in-seconds-for-remember-me: 3600 # 1hour -> remember me 토큰만료되어도 1시간까지는 기억하고 재 로그인 진행함.
 
 ---
 # local
