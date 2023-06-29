@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +23,11 @@ import java.util.Optional;
 @Slf4j
 public class BoardController {
 
-    private static BoardService boardService;
-    private static BoardService s;
+    private final BoardService boardService;
+    private final BoardService s;
 
     @PostMapping("v1/save")
+    @ResponseBody
     public String save(Board in){
 //        BoardDomain domain = new BoardDomain();
 
@@ -33,7 +35,8 @@ public class BoardController {
 
         Long result = boardService.save(in);
 
-        return "boards/board"; // 화면 return
+//        return "boards/board"; // 화면 return
+        return String.valueOf(result);
     }
 
     @GetMapping("/board/v1/retrieveOne")

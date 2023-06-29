@@ -30,7 +30,7 @@ public class BoardService {
 //        in.setModifiedDate(time.getModifiedDate());
 
 
-        repository.save(in);
+        Jrepository.save(in);
 
         return in.getBoardId();
     } //save
