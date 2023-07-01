@@ -1,5 +1,9 @@
 package boot.bootprac.board;
 
+import boot.bootprac.cms.board.Board;
+import boot.bootprac.cms.board.BoardDTO;
+import boot.bootprac.cms.board.BoardRepository;
+import boot.bootprac.cms.board.BoardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,8 +16,10 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 class BoardServiceTest {
 
-    @Autowired BoardService service;
-    @Autowired BoardRepository repository;
+    @Autowired
+    BoardService service;
+    @Autowired
+    BoardRepository repository;
 
 
 

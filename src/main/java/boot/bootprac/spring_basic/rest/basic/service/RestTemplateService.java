@@ -1,6 +1,6 @@
 package boot.bootprac.spring_basic.rest.basic.service;
 
-import boot.bootprac.config.RestTemplateConfig;
+import boot.bootprac.common.config.RestTemplateConfig;
 import boot.bootprac.spring_basic.rest.basic.dto.ResGeneric;
 import boot.bootprac.spring_basic.rest.basic.dto.RestUserResponse;
 import lombok.RequiredArgsConstructor;

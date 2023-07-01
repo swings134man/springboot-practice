@@ -1,18 +1,14 @@
 package boot.bootprac.service;
 
-import boot.bootprac.domain.Member;
-import boot.bootprac.repository.MemberRepository;
-import boot.bootprac.repository.MemoryMemberRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import boot.bootprac.cms.member.domain.Member;
+import boot.bootprac.cms.member.repository.MemberRepository;
+import boot.bootprac.cms.member.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Transactional
 class MemberServiceIntegrationTest {
 
-    @Autowired MemberService memberService;
+    @Autowired
+    MemberService memberService;
     @Autowired MemberRepository memberRepository;
 
 

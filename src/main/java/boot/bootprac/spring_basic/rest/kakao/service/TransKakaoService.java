@@ -1,7 +1,7 @@
 package boot.bootprac.spring_basic.rest.kakao.service;
 
-import boot.bootprac.trace.TraceStatus;
-import boot.bootprac.trace.trace_final.LogTrace;
+import boot.bootprac.etc_server.trace.TraceStatus;
+import boot.bootprac.etc_server.trace.trace_final.LogTrace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;

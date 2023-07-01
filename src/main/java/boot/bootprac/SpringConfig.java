@@ -1,9 +1,7 @@
 package boot.bootprac;
 
-import boot.bootprac.board.BoardRepository;
-import boot.bootprac.board.BoardService;
-import boot.bootprac.repository.*;
-import boot.bootprac.service.MemberService;
+import boot.bootprac.cms.member.repository.MemberRepository;
+import boot.bootprac.cms.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

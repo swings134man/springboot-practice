@@ -1,5 +1,9 @@
 package boot.bootprac.board;
 
+import boot.bootprac.cms.board.Board;
+import boot.bootprac.cms.board.BoardDTO;
+import boot.bootprac.cms.board.BoardRepository;
+import boot.bootprac.cms.board.BoardService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +13,10 @@ import java.util.Optional;
 
 class BoardControllerTest {
 
-    @Autowired BoardService boardService;
-    @Autowired BoardRepository boardRepository;
+    @Autowired
+    BoardService boardService;
+    @Autowired
+    BoardRepository boardRepository;
 
     @Test
     void 게시물작성() {

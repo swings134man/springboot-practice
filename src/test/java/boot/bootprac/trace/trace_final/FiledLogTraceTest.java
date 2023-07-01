@@ -1,9 +1,8 @@
 package boot.bootprac.trace.trace_final;
 
-import boot.bootprac.trace.TraceStatus;
+import boot.bootprac.etc_server.trace.TraceStatus;
+import boot.bootprac.etc_server.trace.trace_final.FiledLogTrace;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /************
  * @info : 로그 추적기 - 동시성 문제 테스트

@@ -1,6 +1,6 @@
 package boot.bootprac.jwt_request.service;
 
-import boot.bootprac.config.RestTemplateConfig;
+import boot.bootprac.common.config.RestTemplateConfig;
 import boot.bootprac.jwt_request.domain.JwtRequestDTO;
 import boot.bootprac.jwt_request.domain.JwtResponseDTO;
 import lombok.RequiredArgsConstructor;

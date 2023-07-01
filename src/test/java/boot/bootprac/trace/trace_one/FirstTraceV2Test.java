@@ -1,6 +1,7 @@
 package boot.bootprac.trace.trace_one;
 
-import boot.bootprac.trace.TraceStatus;
+import boot.bootprac.etc_server.trace.TraceStatus;
+import boot.bootprac.etc_server.trace.trace_one.FirstTraceV2;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

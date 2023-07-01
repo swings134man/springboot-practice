@@ -1,14 +1,11 @@
 package boot.bootprac.service;
 
-import boot.bootprac.domain.Member;
-import boot.bootprac.repository.MemberRepository;
-import boot.bootprac.repository.MemoryMemberRepository;
-import org.assertj.core.api.Assertions;
+import boot.bootprac.cms.member.domain.Member;
+import boot.bootprac.cms.member.repository.MemoryMemberRepository;
+import boot.bootprac.cms.member.service.MemberService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
