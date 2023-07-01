@@ -3,7 +3,12 @@ spring:
   config:
     activate:
       on-profile: local
-  # table name : boot_jpa
+
+  devtools:
+    livereload:
+      enabled: true
+
+   # table name : boot_jpa
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/boot_jpa?useSSL=false

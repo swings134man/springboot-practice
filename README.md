@@ -8,6 +8,7 @@
 
 ## Skill Set
 - Spring Boot
+- JPA
 - Spring Security 
 - Spring Batch
 - JWT OATUH 2.0
