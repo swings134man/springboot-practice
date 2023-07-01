@@ -1,5 +1,6 @@
 package boot.bootprac.board;
 
+import boot.bootprac.config.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "BOARD")
-public class Board extends BaseTimeEntity{
+public class Board extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

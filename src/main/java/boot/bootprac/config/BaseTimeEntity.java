@@ -1,4 +1,4 @@
-package boot.bootprac.board;
+package boot.bootprac.config;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,13 +48,13 @@ public class BaseTimeEntity {
 
     @PrePersist
     public void onPrePersist(){
-        this.insertDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+        this.insertDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.modifiedDate = this.insertDate;
     }
 
     @PreUpdate
     public void onPreUpdate(){
-        this.modifiedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+        this.modifiedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }

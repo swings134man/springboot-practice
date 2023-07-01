@@ -1,6 +1,6 @@
 package boot.bootprac.fileServer;
 
-import boot.bootprac.board.BaseTimeEntity;
+import boot.bootprac.config.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
