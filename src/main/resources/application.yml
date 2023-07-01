@@ -72,44 +72,44 @@ jwt:
   token-validity-in-seconds: 1800 # 30min
   token-validity-in-seconds-for-remember-me: 3600 # 1hour -> remember me 토큰만료되어도 1시간까지는 기억하고 재 로그인 진행함.
 
----
-# local
-spring:
-  config:
-    activate:
-      on-profile: local
-  # table name : boot_jpa
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/boot_jpa?useSSL=false
-    username: root
-    password: 1234
-
-  #File Server
-  servlet:
-    multipart:
-      enabled: true
-      max-file-size: 100MB
-      max-request-size: 100MB
-      file-size-threshold: 2KB
-      location: /Users/seokjunKang/intellij-gradle/file
----
-# for Docker Images
-spring:
-  config:
-    activate:
-      on-profile: docker
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.201.49.184:3306/boot_jpa?characterEncoding=UTF-8
-    username: root
-    password: 1234
-
-  #File Server - AWS
-  servlet:
-    multipart:
-      enabled: true
-      max-file-size: 100MB
-      max-request-size: 100MB
-      file-size-threshold: 2KB
-      location: /home/ubuntu/day-file
+#---
+## local
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
+#  # table name : boot_jpa
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/boot_jpa?useSSL=false
+#    username: root
+#    password: 1234
+#
+#  #File Server
+#  servlet:
+#    multipart:
+#      enabled: true
+#      max-file-size: 100MB
+#      max-request-size: 100MB
+#      file-size-threshold: 2KB
+#      location: /Users/seokjunKang/intellij-gradle/file
+#---
+## for Docker Images
+#spring:
+#  config:
+#    activate:
+#      on-profile: docker
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://43.201.49.184:3306/boot_jpa?characterEncoding=UTF-8
+#    username: root
+#    password: 1234
+#
+#  #File Server - AWS
+#  servlet:
+#    multipart:
+#      enabled: true
+#      max-file-size: 100MB
+#      max-request-size: 100MB
+#      file-size-threshold: 2KB
+#      location: /home/ubuntu/day-file

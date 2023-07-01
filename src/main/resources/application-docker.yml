@@ -1,0 +1,19 @@
+# for Docker Images
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://43.201.49.184:3306/boot_jpa?characterEncoding=UTF-8
+    username: root
+    password: 1234
+
+  #File Server - AWS
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 2KB
+      location: /home/ubuntu/day-file
