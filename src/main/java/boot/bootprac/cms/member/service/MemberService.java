@@ -2,6 +2,7 @@ package boot.bootprac.cms.member.service;
 
 import boot.bootprac.cms.member.domain.Member;
 import boot.bootprac.cms.member.repository.MemberRepository;
+import boot.bootprac.common.exception.ExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,10 +62,14 @@ public class MemberService {
      * 중복 회원 검증 Method
      */
     private void validateDuplicateMember(Member member) {
+//        memberRepository.findByName(member.getName())
+//                        .ifPresent(m -> {
+//                            throw new IllegalStateException("이미 존재하는 회원입니다.");
+//                        });// 값이 있으면? (존재하는 이름이면?) -> Optional 안에 Member객체가 있는것임.
         memberRepository.findByName(member.getName())
-                        .ifPresent(m -> {
-                            throw new IllegalStateException("이미 존재하는 회원입니다.");
-                        });// 값이 있으면? (존재하는 이름이면?) -> Optional 안에 Member객체가 있는것임.
+                .ifPresent(m -> {
+                    throw new ExistException("이미 존재하는 회원입니다.", m.getName());
+                });// 값이 있으면? (존재하는 이름이면?) -> Optional 안에 Member객체가 있는것임.
     }
 
     /**
