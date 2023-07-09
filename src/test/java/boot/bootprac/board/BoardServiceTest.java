@@ -7,19 +7,22 @@ import boot.bootprac.cms.board.BoardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
+/**
+ * DB Data RollBack - @Transactional
+ */
 @SpringBootTest
+@Transactional
 class BoardServiceTest {
 
-    @Autowired
-    BoardService service;
-    @Autowired
-    BoardRepository repository;
+    @Autowired BoardService service;
+    @Autowired BoardRepository repository;
 
 
 
@@ -38,8 +41,10 @@ class BoardServiceTest {
         Optional<Board> findId= service.findById(domain.getBoardId());
         Long thenResult= findId.get().getBoardId();
 
+        // Data 정합성 확인
         assertThat(whenResult).isEqualTo(thenResult);
 
+        System.out.println("findId.get() = " + findId.get().getBoardId());
     }
 
     @Test
