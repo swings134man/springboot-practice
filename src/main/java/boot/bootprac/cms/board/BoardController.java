@@ -2,6 +2,8 @@ package boot.bootprac.cms.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,6 +62,16 @@ public class BoardController {
         return "boards/boardList";
     }
 
+    @GetMapping("board/v2/findAll")
+    @ResponseBody
+    public ResponseEntity<List<Board>> findAll2() {
+        var result = boardService.test();
+        if(result == null){
+            throw new NullPointerException("result is null");
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 
 }//class
