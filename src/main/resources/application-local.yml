@@ -1,4 +1,4 @@
-# local
+# local - DO NOT PUSH TO GIT
 spring:
   config:
     activate:
@@ -11,9 +11,9 @@ spring:
    # table name : boot_jpa
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/boot_jpa?useSSL=false
-    username: root
-    password: 1234
+    url: ENC(2tblSiBl/MkooOu09vEjDquEe0RFeHOwzr15PKpWhtbaRfobHEnsz/ch9TId6SHqOHRKqrN6qnU=)
+    username: ENC(ZK+0B+n1d0g=)
+    password: ENC(MolSR0F00F8=)
 
   #File Server
   servlet:
@@ -23,3 +23,10 @@ spring:
       max-request-size: 100MB
       file-size-threshold: 2KB
       location: /Users/seokjunKang/intellij-gradle/file
+
+
+
+# DB PASS WORD ENCRYPT - JASYPT : ONLY FOR LOCAL
+encrypt:
+  password: ThisIsPassWord12!@
+  algorithm: PBEWithMD5AndDES
