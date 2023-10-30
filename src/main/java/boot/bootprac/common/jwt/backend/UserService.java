@@ -1,6 +1,7 @@
 package boot.bootprac.common.jwt.backend;
 
 import java.util.Collections;
+import java.util.List;
 
 import boot.bootprac.common.jwt.Authority;
 import boot.bootprac.common.jwt.User;
@@ -64,5 +65,10 @@ public class UserService {
                         .flatMap(userRepository::findOneWithAuthoritiesByUsername)
                         .orElseThrow(() -> new NotFoundMemberException("Member not found"))
         );
+    }
+
+    @Transactional
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }
