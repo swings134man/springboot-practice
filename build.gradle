@@ -65,6 +65,8 @@ dependencies {
 	implementation group: 'com.google.zxing', name: 'javase', version: '3.5.0'
 	implementation group: 'com.google.zxing', name: 'core', version: '3.5.0'
 
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+
 }
 
 tasks.named('test') {
