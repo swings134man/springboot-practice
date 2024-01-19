@@ -51,7 +51,7 @@
 # http://localhost:8080/swagger-ui.html
 spring:
   profiles:
-    active: local
+    active: docker
 
   # jpa
   jpa:

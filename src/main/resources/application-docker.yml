@@ -5,7 +5,7 @@ spring:
       on-profile: docker
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.201.49.184:3306/boot_jpa?characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/boot_jpa?characterEncoding=UTF-8
     username: root
     password: 1234
 
