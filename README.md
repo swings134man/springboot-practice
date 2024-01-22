@@ -36,3 +36,7 @@
 3. Spring JWT (Server, Client Side)
 4. Spring - Docker - AWS CI/CD 파이프라인 구축
 5. Spring Boot Log 추적기 
+
+
+### TIPS
+1. jasypt option : --jasypt.encryptor.password=testkey
