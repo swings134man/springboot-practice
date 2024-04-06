@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
@@ -87,6 +89,31 @@ public class FileController {
 
         return ResponseEntity.
                 ok().header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition).body(resource);
+    }
+
+    // 선택 파일 ZIP 다운로드
+    @GetMapping("/files/zipDown")
+    public void zipDown(@RequestParam List<Long> ids,
+                        HttpServletRequest request,
+                        HttpServletResponse response) {
+
+        if(ids == null || ids.size() == 0) {
+            throw new IllegalArgumentException("No Selected Files");
+        }
+
+        try {
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=" + "files.zip");
+
+            // make Zip
+
+
+            response.flushBuffer();
+        } catch (IOException e) {
+            log.error("Error writing file to output stream. Filename was '{}'", e);
+            throw new RuntimeException(e);
+        }
+
     }
 
 }//class

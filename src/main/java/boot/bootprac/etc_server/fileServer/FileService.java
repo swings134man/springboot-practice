@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -85,6 +86,21 @@ public class FileService {
         FileEntity file = fileRepository.findById(id).orElse(null);
 
         return file;
+    }
+
+    public void compressZip(List<Long> ids) {
+        // 1. select File List -> DB
+
+        // 2. Get File And Add File List
+        List<File> fileList = new ArrayList<>();
+
+
+        // 3. Zip File Server Tmp saved
+        File zipFile = new File(fileDir + "tmp/req_temp.zip");
+
+        byte[] buff = new byte[4096];
+
+        // 4. Zip File Transfer
     }
 
 }// class
