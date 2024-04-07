@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -88,19 +89,72 @@ public class FileService {
         return file;
     }
 
-    public void compressZip(List<Long> ids) {
+    public void compressZip(List<Long> ids, OutputStream outputStream) {
         // 1. select File List -> DB
+        List<FileEntity> listRes = fileRepository.findAllById(ids);
 
         // 2. Get File And Add File List
         List<File> fileList = new ArrayList<>();
-
+        for (FileEntity f : listRes) {
+            fileList.add(new File(f.getSavePath()));
+        }
 
         // 3. Zip File Server Tmp saved
-        File zipFile = new File(fileDir + "tmp/req_temp.zip");
+        File zipFile = new File(fileDir + "/tmp/req_temp.zip");
 
         byte[] buff = new byte[4096];
 
+        // 임시 저장.
+        try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))){
+            for (File file : fileList) {
+                try (FileInputStream in = new FileInputStream(file)) {
+                    String attachName = ""; // Zip File in Each File Names
+//                    for (Attach a : attaches){
+//                        if (file.getName().equals(a.getSavedName())){
+//                            attachName = a.getDisplayName();
+//                        }
+//                    }
+
+                    ZipEntry ze = new ZipEntry(attachName);
+                    out.putNextEntry(ze);
+
+                    int len;
+
+                    while ((len = in.read(buff)) > 0) {
+                        out.write(buff, 0, len);
+                    }
+
+                    out.closeEntry();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        buff = new byte[4096];
+
         // 4. Zip File Transfer
+        try (ZipOutputStream out = new ZipOutputStream(outputStream)) {
+            File zipServer = new File(fileDir + "/tmp/req_temp.zip");
+            try (FileInputStream in = new FileInputStream(zipServer)) {
+                ZipEntry ze = new ZipEntry(zipServer.getName());
+                out.putNextEntry(ze);
+
+                int len;
+
+                while ((len = in.read(buff)) > 0) {
+                    out.write(buff, 0, len);
+                }
+
+                out.closeEntry();
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            zipFile.delete();
+        }
+
     }
 
 }// class
