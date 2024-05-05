@@ -15,5 +15,69 @@
 <div th:each="file : ${all}">
     <a th:href="|/attach/${file.id}|" th:text="${file.orgNm}"></a>
 </div>
+
+<h3>ZIP 파일 다운로드</h3>
+<button id="btnZip">ZIP 파일 다운로드</button>
 </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnZip").click(function () {
+            console.log('click');
+            downloadZipFileTest()
+        });
+        function downloadZipFileTest() {
+            // list
+            const list = [6, 7]; // FIXME: This is a TEST CODE
+
+            $.ajax({
+                url: '/files/zipDown',
+                type: 'GET',
+                data: $.param({ ids: list }, true),
+                dataType: 'blob',
+                success: function(res) {
+                    const date = moment().format('YYYYMMDDHHmmss');
+
+                    const blob = new Blob([res], { type: 'application/octet-stream' });
+
+                    const link = document.createElement('a');
+                    const url = window.URL.createObjectURL(blob);
+                    link.href = url;
+                    link.download = `zipFile_${date}.zip`;
+                    link.click();
+
+                    window.URL.revokeObjectURL(url);
+                },
+                error: function(e) {
+                    console.log(e);
+                    alert('오류가 발생했습니다.');
+                }
+            });
+
+            // axios.get('files/zipDown',
+            //     {params: {targetList: list}
+            //         , responseType: 'blob'
+            //     })
+            //     .then(res => {
+            //         const date = moment().format('YYYYMMDDHHmmss');
+            //
+            //         const blob = new Blob([res.data], { type: 'application/octet-stream' });
+            //
+            //         const link = document.createElement('a');
+            //         const url = window.URL.createObjectURL(blob);
+            //         link.href = url;
+            //         link.download = `zipFile_${date}.zip`;
+            //         link.click();
+            //
+            //         window.URL.revokeObjectURL(url);
+            //     }).catch((e) => {
+            //     console.log(e);
+            //     alert('오류가 발생했습니다.');
+            // });
+        }
+    });
+</script>

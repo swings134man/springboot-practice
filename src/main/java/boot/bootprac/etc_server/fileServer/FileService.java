@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +21,8 @@ import java.util.zip.ZipOutputStream;
 @Slf4j
 public class FileService {
 
-//    @Value("${file.dir}")
-    @Value("servlet.multipart.location")
+    @Value("${file.path}")
+//    @Value("${servlet.multipart.location}")
     private String fileDir;
 
     private final FileRepository fileRepository;
@@ -44,7 +46,7 @@ public class FileService {
         String saveName = uuid + extension;
 
         // 파일을 불러올 떄 사용할 파일 경로
-        String savePath = fileDir + saveName;
+        String savePath = fileDir +"/"+ saveName;
 
         // 파일 entity
         FileEntity file = FileEntity.builder()
@@ -99,31 +101,46 @@ public class FileService {
             fileList.add(new File(f.getSavePath()));
         }
 
-        // 3. Zip File Server Tmp saved
-        File zipFile = new File(fileDir + "/tmp/req_temp.zip");
 
-        byte[] buff = new byte[4096];
+        // 3. Zip File Server Tmp saved
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        String now = LocalDateTime.now().format(formatter);
+        String zipFileName = fileDir +"/"+ now + ".zip";
+
+        File zipFile = new File(zipFileName);
+
 
         // 임시 저장.
+        // zip 생성 서버 임시 저장
         try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))){
+            int fileIndex = 0;
+
             for (File file : fileList) {
                 try (FileInputStream in = new FileInputStream(file)) {
-                    String attachName = ""; // Zip File in Each File Names
-//                    for (Attach a : attaches){
-//                        if (file.getName().equals(a.getSavedName())){
-//                            attachName = a.getDisplayName();
-//                        }
-//                    }
+                    String attachName = "";
+                    for (FileEntity f : listRes) {
+                        if(f.getSaveNm().equals(file.getName())) {
+                            attachName = f.getOrgNm();
+                        }
+                    }
 
-                    ZipEntry ze = new ZipEntry(attachName);
+                    String uniqueFileName = fileIndex + "_" + attachName;
+                    fileIndex++;
+
+                    ZipEntry ze = new ZipEntry(uniqueFileName);
                     out.putNextEntry(ze);
 
                     int len;
+                    byte[] buffer = new byte[8192];
 
-                    while ((len = in.read(buff)) > 0) {
-                        out.write(buff, 0, len);
+                    while ((len = in.read(buffer)) > 0) {
+                        out.write(buffer, 0, len);
                     }
 
+                    out.closeEntry();
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }finally {
                     out.closeEntry();
                 }
             }
@@ -132,19 +149,19 @@ public class FileService {
         }
 
 
-        buff = new byte[4096];
 
-        // 4. Zip File Transfer
+        // zip 파일 다운로드
         try (ZipOutputStream out = new ZipOutputStream(outputStream)) {
-            File zipServer = new File(fileDir + "/tmp/req_temp.zip");
+            File zipServer = new File(zipFileName);
             try (FileInputStream in = new FileInputStream(zipServer)) {
                 ZipEntry ze = new ZipEntry(zipServer.getName());
                 out.putNextEntry(ze);
 
                 int len;
+                byte[] buffer = new byte[8192];
 
-                while ((len = in.read(buff)) > 0) {
-                    out.write(buff, 0, len);
+                while ((len = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, len);
                 }
 
                 out.closeEntry();
@@ -154,6 +171,7 @@ public class FileService {
         }finally {
             zipFile.delete();
         }
+
 
     }
 

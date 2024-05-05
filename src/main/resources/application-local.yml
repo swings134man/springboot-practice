@@ -30,3 +30,6 @@ spring:
 encrypt:
   password: ThisIsPassWord12!@
   algorithm: PBEWithMD5AndDES
+
+file:
+  path: /Users/seokjunKang/intellij-gradle/file

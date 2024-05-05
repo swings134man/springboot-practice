@@ -106,7 +106,7 @@ public class FileController {
             response.setHeader("Content-Disposition", "attachment; filename=" + "files.zip");
 
             // make Zip
-
+            fileService.compressZip(ids, response.getOutputStream());
 
             response.flushBuffer();
         } catch (IOException e) {
