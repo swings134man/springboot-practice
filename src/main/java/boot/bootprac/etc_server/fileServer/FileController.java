@@ -36,17 +36,25 @@ public class FileController {
     // 파일 업로드
     @PostMapping("/file/upload")
     public String uploadFile(
-            @RequestParam("file") MultipartFile file, @RequestParam("files") List<MultipartFile> files) throws IOException {
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("files") List<MultipartFile> files,
+            @RequestParam("ocr") MultipartFile ocr) throws IOException {
 
 
-        System.out.println("file : " + file);
-        System.out.println("files : " + files);
-
+        if(!file.isEmpty()) {
+            System.out.println("file : " + file);
             fileService.saveFile(file);
+        }else if(!files.isEmpty()) {
+            System.out.println("files : " + files);
 
             for(MultipartFile multipartFile : files){
                 fileService.saveFile(multipartFile);
             }
+        } else if (!ocr.isEmpty()) {
+            // TODO: OCR function
+            System.out.println("ocr file : " + ocr);
+
+        }
 
         return "redirect:/";
     }

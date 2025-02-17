@@ -9,10 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -27,23 +24,27 @@ public class FileService {
 
     private final FileRepository fileRepository;
 
+    // -------------------------------- public methods --------------------------------
+
     // 파일 업로드
     public Long saveFile(MultipartFile files) throws IOException {
         if(files.isEmpty()) {
             return null;
         } //if
 
+        HashMap<String, String> fileStrings = extractFileStrings(files);
+
         // 파일 원본 이름 추출
-        String origName = files.getOriginalFilename();
+        String origName = fileStrings.get("origName");
 
         // 파일이름으로 사용할 uuid
-        String uuid = UUID.randomUUID().toString();
+        String uuid = fileStrings.get("uuid");
 
         // 확장자 추출
-        String extension = origName.substring(origName.lastIndexOf("."));
+        String extension = fileStrings.get("extension");
 
         // uuid + 확장자 결합
-        String saveName = uuid + extension;
+        String saveName = fileStrings.get("saveName");
 
         // 파일을 불러올 떄 사용할 파일 경로
         String savePath = fileDir +"/"+ saveName;
@@ -171,8 +172,35 @@ public class FileService {
         }finally {
             zipFile.delete();
         }
+    }
+
+    // OCR 문자열 추출
+    public void ocrStringExtract(MultipartFile file) {
+        HashMap<String, String> fileStrings = extractFileStrings(file);
+
+        String origName = fileStrings.get("origName");
+        String uuid = fileStrings.get("uuid");
+        String extension = fileStrings.get("extension");
+        String saveName = fileStrings.get("saveName");
 
 
+    }
+
+    // -------------------------------- private methods --------------------------------
+
+    // File 에서 원본명, UUID, 확장자, UUID + 확장자 추출
+    private HashMap<String, String> extractFileStrings(MultipartFile file) {
+        HashMap<String, String> map = new HashMap<>();
+
+        // 파일 원본명 추출
+        String origName = file.getOriginalFilename();
+
+        map.put("origName", origName);
+        map.put("uuid", UUID.randomUUID().toString());
+        map.put("extension", origName.substring(origName.lastIndexOf(".")));
+        map.put("saveName", map.get("uuid") + map.get("extension"));
+
+        return map;
     }
 
 }// class
