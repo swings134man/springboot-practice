@@ -11,7 +11,7 @@ spring:
    # table name : boot_jpa
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ENC(Yrd+WV99kPSCSmU07NqOpzW2WsMMX28W7RKtthap/E7ohHMv/C9IGEOkQtH+F5gAj4OOkEbTr5+BiyPI3BxsDQ==)
+    url: ENC(Yrd+WV99kPSCSmU07NqOpzW2WsMMX28W7RKtthap/E7ohHMv/C9IGFa9Mn8Cy+vHyi2kb3Qot4JblJiThOi0nA==)
     username: ENC(3g9P8y1C2AY=)
     password: ENC(8KzhuotTnEjfpdWzLJWKmA==)
 
@@ -22,7 +22,7 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
       file-size-threshold: 2KB
-      location: /Users/lucaskang/boot-prac/file
+      location: /Users/lucaskang/6.data/boot-prac/file
 
 
 
@@ -32,4 +32,8 @@ encrypt:
   algorithm: PBEWithMD5AndDES
 
 file:
-  path: /Users/lucaskang/boot-prac/file
+  path: /Users/lucaskang/6.data/boot-prac/file
+
+ocr:
+  data:
+    path: /opt/homebrew/Cellar/tesseract/5.5.0/share/ # M4 Local Test

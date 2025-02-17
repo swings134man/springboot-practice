@@ -37,9 +37,7 @@ public class FileController {
     @PostMapping("/file/upload")
     public String uploadFile(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("files") List<MultipartFile> files,
-            @RequestParam("ocr") MultipartFile ocr) throws IOException {
-
+            @RequestParam("files") List<MultipartFile> files) throws IOException {
 
         if(!file.isEmpty()) {
             System.out.println("file : " + file);
@@ -50,12 +48,15 @@ public class FileController {
             for(MultipartFile multipartFile : files){
                 fileService.saveFile(multipartFile);
             }
-        } else if (!ocr.isEmpty()) {
-            // TODO: OCR function
-            System.out.println("ocr file : " + ocr);
-
         }
 
+        return "redirect:/";
+    }
+
+    @PostMapping("/file/ocr")
+    public String ocrConvert(@RequestParam("ocr") MultipartFile ocr) throws IOException {
+        System.out.println("ocr file : " + ocr);
+        String result = fileService.ocrStringExtract(ocr);
         return "redirect:/";
     }
 

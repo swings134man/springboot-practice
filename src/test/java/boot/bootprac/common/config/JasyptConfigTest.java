@@ -21,7 +21,7 @@ class JasyptConfigTest {
     void jasyptRun() {
 
         // TARGET
-        String url = "jdbc:mysql://localhost:3306/boot_jpa?useSSL=false";
+        String url = "jdbc:mariadb://192.168.45.135:3360/boot_jpa?useSSL=false";
         String username = "root";
         String password = "1234";
 

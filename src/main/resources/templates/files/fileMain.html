@@ -12,7 +12,17 @@
   <input type="file" name="file">
 
   <h4>다중 파일 업로드</h4>
-  <input type="file" multiple="multiple" name="files">
+  <input type="file" multiple="multiple" name="files"><br/>
+
+  <input type="submit"/>
+</form>
+
+<hr/>
+
+<form action="/file/ocr" method="post" enctype="multipart/form-data">
+
+  <h4>OCR 단일 파일 업로드</h4>
+  <input type="file" name="ocr"> <br/>
 
   <input type="submit"/>
 </form>

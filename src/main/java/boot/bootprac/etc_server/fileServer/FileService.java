@@ -2,6 +2,9 @@ package boot.bootprac.etc_server.fileServer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sourceforge.tess4j.ITesseract;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +24,9 @@ public class FileService {
     @Value("${file.path}")
 //    @Value("${servlet.multipart.location}")
     private String fileDir;
+
+    @Value("${ocr.data.path}")
+    private String ocrDataPath;
 
     private final FileRepository fileRepository;
 
@@ -67,11 +73,51 @@ public class FileService {
         return saveFile.getId();
     }// saveFile
 
+    public FileEntity saveFile(MultipartFile files, HashMap<String, String> fileStrings) throws IOException {
+        if(files.isEmpty()) {
+            return null;
+        } //if
+
+
+        // 파일 원본 이름 추출
+        String origName = fileStrings.get("origName");
+
+        // 파일이름으로 사용할 uuid
+        String uuid = fileStrings.get("uuid");
+
+        // 확장자 추출
+        String extension = fileStrings.get("extension");
+
+        // uuid + 확장자 결합
+        String saveName = fileStrings.get("saveName");
+
+        // 파일을 불러올 떄 사용할 파일 경로
+        String savePath = fileDir +"/"+ saveName;
+
+        // 파일 entity
+        FileEntity file = FileEntity.builder()
+                .orgNm(origName)
+                .saveNm(saveName)
+                .savePath(savePath)
+                .build();
+
+        // local에 uuid를 파일명으로 저장
+        files.transferTo(new File(savePath));
+
+        // DB 파일정보 저장
+        FileEntity saveFile = fileRepository.save(file);
+
+        System.out.println("file  S: " + saveFile);
+
+        return saveFile;
+    }// saveFile
+
     // 파일 다운로드
     public List<FileEntity> viewFile() throws Exception {
         List<FileEntity> filesAll = fileRepository.findAll();
 
         if(filesAll.isEmpty()) {
+            //TODO: FIXME : Exception 처리 및 null return
             throw new Exception();
         }
 
@@ -90,6 +136,18 @@ public class FileService {
         FileEntity file = fileRepository.findById(id).orElse(null);
 
         return file;
+    }
+
+    // 파일 삭제
+    public void deleteFile(Long fileId) {
+        fileRepository.findById(fileId).ifPresent(file -> {
+            File deleteFile = new File(file.getSavePath());
+            if(deleteFile.exists()) {
+                deleteFile.delete();
+            }
+
+            fileRepository.delete(file); //TODO: 임시로 파일 삭제 처리
+        });
     }
 
     public void compressZip(List<Long> ids, OutputStream outputStream) {
@@ -175,15 +233,40 @@ public class FileService {
     }
 
     // OCR 문자열 추출
-    public void ocrStringExtract(MultipartFile file) {
+    public String ocrStringExtract(MultipartFile file) throws IOException {
         HashMap<String, String> fileStrings = extractFileStrings(file);
 
-        String origName = fileStrings.get("origName");
-        String uuid = fileStrings.get("uuid");
         String extension = fileStrings.get("extension");
-        String saveName = fileStrings.get("saveName");
 
+        // Image 확장자일 경우만 OCR 추출
+        if(extension.equals(".jpg") || extension.equals(".jpeg") || extension.equals(".png")) {
+            log.info("OCR Start");
 
+            FileEntity fileEntity = saveFile(file, fileStrings);// 파일저장
+            File savedFile = getFileByPath(fileEntity.getSavePath());
+
+            String resultText = "";
+
+            try {
+                ITesseract tesseract = new Tesseract();
+                tesseract.setDatapath(ocrDataPath); // Tesseract OCR Data Path(분석 Language Data model)
+                tesseract.setLanguage("kor+eng");
+                tesseract.setPageSegMode(6); // 6: 단락분석, 3: 완전한 페이지 분석, 1: 자동 레이아웃 감지
+
+                resultText = tesseract.doOCR(savedFile);
+            }catch (TesseractException e) {
+                resultText = "OCR Error";
+                e.printStackTrace();
+            }finally {
+                // OCR 추출 후 파일 삭제
+                deleteFile(fileEntity.getId());
+            }
+
+            log.info("OCR Text : {}", resultText);
+            return resultText;
+        }else {
+            return "Not Image File"; //TODO: Exception Process ?
+        }
     }
 
     // -------------------------------- private methods --------------------------------
@@ -203,4 +286,7 @@ public class FileService {
         return map;
     }
 
+    private File getFileByPath(String path) {
+        return new File(path);
+    }
 }// class
