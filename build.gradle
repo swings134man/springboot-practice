@@ -36,6 +36,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools:2.7.0' //devtools
 	//implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'mysql:mysql-connector-java' // MySql
+	implementation("org.mariadb.jdbc:mariadb-java-client:2.1.2") //mariaDB
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // data- jpa
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8' // modelmapper
 	implementation 'org.apache.poi:poi:5.2.2'                // .xls 확장자
@@ -44,6 +45,7 @@ dependencies {
 	//runtimeOnly 'com.h2database:h2'
 
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot:3.0.4' // jasypt
+	implementation 'net.sourceforge.tess4j:tess4j:5.13.0' // Tesseract - OCR
 
 
 	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple

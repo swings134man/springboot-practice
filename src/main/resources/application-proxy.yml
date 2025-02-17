@@ -1,0 +1,35 @@
+# local - DO NOT PUSH TO GIT
+spring:
+  config:
+    activate:
+      on-profile: proxy
+
+  devtools:
+    livereload:
+      enabled: true
+
+   # table name : boot_jpa
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ENC(Yrd+WV99kPSCSmU07NqOpzW2WsMMX28W7RKtthap/E7ohHMv/C9IGEOkQtH+F5gAj4OOkEbTr5+BiyPI3BxsDQ==)
+    username: ENC(3g9P8y1C2AY=)
+    password: ENC(8KzhuotTnEjfpdWzLJWKmA==)
+
+  #File Server
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 2KB
+      location: /Users/lucaskang/boot-prac/file
+
+
+
+# DB PASS WORD ENCRYPT - JASYPT : ONLY FOR LOCAL
+encrypt:
+  password: ThisIsPassWord12!@
+  algorithm: PBEWithMD5AndDES
+
+file:
+  path: /Users/lucaskang/boot-prac/file
