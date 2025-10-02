@@ -80,6 +80,15 @@ public class FileController {
         return new UrlResource("file:" + fileEntity.get().getSavePath());
     }
 
+    // 이미지명(UUID) 로 출력(CK)
+    @GetMapping("/files/name/{fileName}")
+    @ResponseBody // Uri resource 로 파일 reading 후 이미지 바이너리 반환
+    public Resource showImageByName(@PathVariable("fileName") String fileName) throws IOException{
+        FileEntity fileEntity = fileService.showImageByName(fileName);
+
+        return new UrlResource("file:" + fileEntity.getSavePath());
+    }
+
     // 파일 다운로드
     @GetMapping("/attach/{id}")
     public ResponseEntity<Resource> downFile(@PathVariable Long id) throws MalformedURLException {

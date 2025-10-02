@@ -11,4 +11,5 @@ public interface FileRepository extends JpaRepository<FileEntity, Long> {
     @Query("select f from FileEntity f where f.id in :ids")
     List<FileEntity> findAllById(@Param("ids") List<Long> ids);
 
+    FileEntity findBySaveNm(String saveNm); //(CK)
 }

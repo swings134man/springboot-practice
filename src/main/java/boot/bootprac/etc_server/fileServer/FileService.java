@@ -112,6 +112,48 @@ public class FileService {
         return saveFile;
     }// saveFile
 
+    // 임시 파일 저장(CK)
+    public FileEntity saveTempFile(MultipartFile files) throws IOException {
+        if(files.isEmpty()) {
+            return null;
+        } //if
+
+        HashMap<String, String> fileStrings = extractFileStrings(files);
+
+        // 파일 원본 이름 추출
+        String origName = fileStrings.get("origName");
+
+        // 파일이름으로 사용할 uuid
+        String uuid = fileStrings.get("uuid");
+
+        // 확장자 추출
+        String extension = fileStrings.get("extension");
+
+        // uuid + 확장자 결합
+        String saveName = fileStrings.get("saveName");
+
+        // 파일을 불러올 떄 사용할 파일 경로
+        String savePath = fileDir +"/tmp/"+ saveName;
+
+        // 파일 entity
+        FileEntity file = FileEntity.builder()
+                .orgNm(origName)
+                .saveNm(saveName)
+                .savePath(savePath)
+                .build();
+
+        // local에 uuid를 파일명으로 저장
+        files.transferTo(new File(savePath));
+
+        // DB 파일정보 저장
+        FileEntity saveFile = fileRepository.save(file);
+
+        System.out.println("file  S: " + saveFile);
+
+        return saveFile;
+    }// saveFile
+
+
     // 파일 다운로드
     public List<FileEntity> viewFile() throws Exception {
         List<FileEntity> filesAll = fileRepository.findAll();
@@ -129,6 +171,11 @@ public class FileService {
         Optional<FileEntity> fileEntity = fileRepository.findById(id);
 
         return fileEntity;
+    }
+
+    // 이미지명(UUID) 로 출력(CK)
+    public FileEntity showImageByName(String fileName) {
+        return fileRepository.findBySaveNm(fileName);
     }
 
     // 파일 다운

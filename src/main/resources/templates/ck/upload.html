@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ck 파일 업로드 조회 테스트 메인</title>
+</head>
+<script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>
+<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<body>
+
+<h1>CKEditor upload Test</h1>
+
+
+<input type="text" id="title" name="title" placeholder="제목을 입력하세요">
+<br><br>
+<input type="text" id="writer" name="writer" placeholder="작성자 입력하세요">
+
+<!--썸네일 -->
+<label>썸네일 업로드</label>
+<input type="file" name="file">
+
+<br><br>
+
+<label for="editor" class="editor">Q&A Content</label>
+<textarea class="form-control content"
+          id="editor" placeholder="내용을 입력해주세요">
+</textarea>
+
+<button>저장</button>
+
+</body>
+</html>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        let myEditor;
+        ClassicEditor
+            .create(document.querySelector("#editor"), {
+                removePlugins: ['MediaEmbed'],
+                ckfinder: {
+                    uploadUrl: '/ck/img/upload'
+                }
+            })
+            .then(editor => {
+                myEditor = editor;
+                console.log('Editor was initialized');
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        document.querySelector("button").addEventListener("click", function(e) {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append("title", document.getElementById("title").value);
+            formData.append("writer", document.getElementById("writer").value);
+            formData.append("content", myEditor.getData());
+            const fileInput = document.querySelector('input[type="file"]');
+            if (fileInput.files.length > 0) {
+                formData.append("thumbnail", fileInput.files[0]);
+            }
+
+            $.ajax({
+                url: "/ck/save",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    alert("저장 완료");
+                },
+                error: function(err) {
+                    alert("저장 실패");
+                }
+            });
+        });
+    });
+</script>
+
