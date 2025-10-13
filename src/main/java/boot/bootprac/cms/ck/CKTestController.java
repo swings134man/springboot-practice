@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @package : boot.bootprac.spring_basic.rest.basic.controller
@@ -30,7 +31,11 @@ public class CKTestController {
     private final FileService fileService;
 
     @GetMapping("/upload")
-    public String getPage() {
+    public String getPage(Model model) {
+        String uuid = UUID.randomUUID().toString();
+
+        model.addAttribute("uuid", uuid);
+
         return "/ck/upload";
     }
 
