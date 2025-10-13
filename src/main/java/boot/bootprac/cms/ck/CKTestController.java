@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +32,23 @@ public class CKTestController {
     @GetMapping("/upload")
     public String getPage() {
         return "/ck/upload";
+    }
+
+    @GetMapping("/sample")
+    public String getPageSample() {
+        return "/ck/sample";
+    }
+
+    @GetMapping("/view/{id}")
+    public String getPage(@PathVariable("id") Long id, Model model) {
+
+        String content = "<h2>CKEditor 저장 예시</h2>"
+                + "<p>아래는 이미지가 포함된 HTML입니다.</p>"
+                + "<p><img src=\"https://raw.githubusercontent.com/docker-library/docs/0e42ee108b46e1ba6333e9eb44201b8f26c4032d/redis/logo.png\" alt=\"logo\"></p>";
+
+
+        model.addAttribute("content", content);
+        return "/ck/view";
     }
 
 

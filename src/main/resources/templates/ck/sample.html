@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<style>
+    #container {
+        width: 1000px;
+        margin: 20px auto;
+    }
+    .ck-editor__editable[role="textbox"] {
+        /* Editing area */
+        min-height: 200px;
+    }
+    .ck-content .image {
+        /* Block images */
+        max-width: 80%;
+        margin: 20px auto;
+    }
+    .jw {
+        display: inline-block;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<!--<button style="font-size: 5em; cursor: pointer" onclick="fJiWon(1)">-->
+<!--    지원 멋졍?-->
+<!--</button>-->
+<!--<button style="font-size: 5em; cursor: pointer" onclick="fJiWon(0)">-->
+<!--    지원 바봉?-->
+<!--</button>-->
+
+
+<input type="text" id="title" name="title" placeholder="제목을 입력하세요">
+<br><br>
+<input type="text" id="writer" name="writer" placeholder="작성자 입력하세요">
+
+<!--썸네일 -->
+<label>썸네일 업로드</label>
+<input type="file" name="file">
+
+<br><br>
+
+<div id="container">
+    <div id="editor"></div>
+</div>
+
+<button id="btnSave">저장</button>
+<script>
+    let myEditor;
+
+    function ranColor() {
+        return ` rgb(
+                  ${Math.round(Math.random() * 255)},
+                  ${Math.round(Math.random() * 255)},
+                  ${Math.round(Math.random() * 255)}
+                 )`;
+    }
+
+    document.querySelector("button").addEventListener("click", function(e) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("title", document.getElementById("title").value);
+        formData.append("writer", document.getElementById("writer").value);
+        formData.append("content", myEditor.getData());
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput.files.length > 0) {
+            formData.append("thumbnail", fileInput.files[0]);
+        }
+
+        $.ajax({
+            url: "/ck/save",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(res) {
+                alert("저장 완료");
+            },
+            error: function(err) {
+                alert("저장 실패");
+            }
+        });
+    });
+
+    // function fJiWon(isJW) {
+    //     let jwPreData = myEditor.getData();
+    //     let jwRanNum = Math.ceil(Math.random() * 3) + 2;
+    //     let jwNewData = `<div class="jw" style="color:${ranColor()};font-size:${jwRanNum}em">지원 바봉</div>`;
+    //     if (isJW)
+    //         jwNewData = `<div class="jw" style="color:${ranColor()};font-size:${jwRanNum}em">지원 멋졍</div>`;
+    //
+    //     myEditor.setData(`${jwPreData}${jwNewData}`);
+    // }
+</script>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
+<script>
+    CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
+        toolbar: {
+            items: [
+                "exportPDF",
+                "|",
+                "findAndReplace",
+                "selectAll",
+                "|",
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "strikethrough",
+                "underline",
+                "code",
+                "subscript",
+                "superscript",
+                "removeFormat",
+                "|",
+                "bulletedList", "numberedList", "todoList", "|",
+                "outdent",
+                "indent",
+                "|",
+                "undo",
+                "redo",
+                "-",
+                "fontSize",
+                "fontFamily",
+                "fontColor",
+                "fontBackgroundColor",
+                "highlight",
+                "|",
+                "alignment",
+                "|",
+                "link",
+                "uploadImage",
+                "blockQuote",
+                "insertTable",
+                "mediaEmbed",
+                "codeBlock",
+                "|",
+                "specialCharacters",
+                "horizontalLine",
+                "|",
+                "sourceEditing",
+            ],
+            shouldNotGroupWhenFull: true,
+        },
+        heading: {
+            options: [
+                {
+                    model: "paragraph",
+                    title: "Paragraph",
+                    class: "ck-heading_paragraph",
+                },
+                {
+                    model: "heading1",
+                    view: "h1",
+                    title: "Heading 1",
+                    class: "ck-heading_heading1",
+                },
+                {
+                    model: "heading2",
+                    view: "h2",
+                    title: "Heading 2",
+                    class: "ck-heading_heading2",
+                },
+            ],
+        },
+        placeholder: "설명을 작성하세요",
+        fontFamily: {
+            options: ["default", "Arial, Helvetica, sans-serif"],
+            supportAllValues: true,
+        },
+        fontSize: {
+            options: [10, 12, 14, "default", 18, 20, 22],
+            supportAllValues: true,
+        },
+        htmlSupport: {
+            allow: [
+                {
+                    name: /.*/,
+                    attributes: true,
+                    classes: true,
+                    styles: true,
+                },
+            ],
+        },
+        link: {
+            decorators: {
+                addTargetToExternalLinks: true,
+                //   defaultProtocol: "https://",
+                toggleDownloadable: {
+                    mode: "manual",
+                    label: "Downloadable",
+                    attributes: {
+                        download: "file",
+                    },
+                },
+            },
+        },
+        removePlugins: [
+            "AIAssistant",
+            "CKBox",
+            "CKFinder",
+            "EasyImage",
+            "MultiLevelList",
+            "RealTimeCollaborativeComments",
+            "RealTimeCollaborativeTrackChanges",
+            "RealTimeCollaborativeRevisionHistory",
+            "PresenceList",
+            "Comments",
+            "TrackChanges",
+            "TrackChangesData",
+            "RevisionHistory",
+            "Pagination",
+            "WProofreader",
+            "MathType",
+            "SlashCommand",
+            "Template",
+            "DocumentOutline",
+            "FormatPainter",
+            "TableOfContents",
+            "PasteFromOfficeEnhanced",
+            "CaseChange",
+        ],
+    })
+        .then((editor) => {
+            myEditor = editor; // Save for later use.
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+</script>
+</body>
+</html>
